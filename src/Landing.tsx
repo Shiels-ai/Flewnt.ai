@@ -24,7 +24,7 @@ const Hero = () => (
       </div>
       <div className="mt-12">
         <img
-          src="./images/uml_demo.png"
+          src="./images/flewnt.png"
           alt="Flewnt demo screenshot"
           className="w-full h-auto rounded-md border border-gray-200 dark:border-slate-700 shadow-md"
         />
@@ -209,7 +209,6 @@ const FinalCTA = () => (
         Explore the repo or reach out to us for more information.
       </p>
       <div className="mt-8 flex justify-center gap-4">
-        <Button variant="secondary">View on GitHub</Button>
         <Button variant="outline">Contact Us</Button>
       </div>
     </div>
