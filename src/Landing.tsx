@@ -110,7 +110,7 @@ const DataLabeling = () => (
         Training Our Own Model
       </h2>
       <p className="mt-4 text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
-        Flewnt.ai isn't just an AI wrapper. We're building a <strong>specialized model</strong> for
+        Flewnt.ai isn't an AI wrapper. We're building a <strong>specialized model</strong> for
         entity and relationship extraction, powered by curated <strong>data labeling pipelines</strong> with over <strong>75,000 data entries</strong>.
         Analysts tag documents with requirements, relationships, and domain-specific entities —
         creating a dataset that gives Flewnt superior accuracy over generic LLMs.
@@ -127,7 +127,6 @@ const Security = () => (
         Built with Security First
       </h2>
       <ul className="mt-6 space-y-3 text-gray-700 dark:text-gray-300 list-disc pl-5 text-left inline-block">
-        <li>On-device transcription ensures voice is never stored</li>
         <li>Confidential terms scrubbed automatically</li>
         <li>Models don’t retain user data</li>
       </ul>
@@ -153,7 +152,7 @@ const Team = () => (
           {
             name: "Sam Shiels",
             role: "Full Stack & Graphics",
-            desc: "Engineer with React/.NET enterprise experience, built diagram rendering engine.",
+            desc: "Engineer with React/.NET enterprise experience",
             img: "./images/sam.png",
           },
           {
