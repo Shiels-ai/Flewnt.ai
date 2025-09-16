@@ -252,6 +252,38 @@ const AiArchitecture = () => (
   </Section>
 );
 
+// RENDERING
+const Rendering = () => (
+  <Section id="rendering" className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
+      <div className="animate-slide-left">
+        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Rendering</h2>
+        <div className="mt-6 space-y-6 text-slate-700 dark:text-slate-300">
+          <div>
+            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Powerful Rendering Engine</h3>
+            <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
+              <li>Hyper-fast, optimized rendering of components that can generate 1000's of entities in sub-second timings.</li>
+              <li>Robust pathfinding and visualization capabilities, driven by the Flewnt diagram engine.</li>
+              <li>Multiple specification sets, with support for custom themes.</li>
+              <li>Export to a variety of formats and data structures.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="animate-fade-in-up delay-200">
+        <div className="relative overflow-hidden rounded-2xl">
+          <SmartImage
+            src="./images/flewnt_diagrams.png"
+            alt="AI architecture visual"
+            label="AI Architecture Visual"
+            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
+          />
+        </div>
+      </div>
+    </div>
+  </Section>
+);
+
 // LABELING & TRAINING
 const LabelingTraining = () => (
   <Section id="labeling" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
@@ -397,6 +429,7 @@ const TopNav = () => (
         { id: "repo", label: "Repository" },
         { id: "infra", label: "Infrastructure" },
         { id: "ai", label: "AI" },
+        { id: "rendering", label: "Rendering" },
         { id: "labeling", label: "Labeling" },
         { id: "config-operations", label: "Config & Ops" },
       ].map((s) => (
@@ -479,6 +512,7 @@ const Flewnt: React.FC = () => (
       <RepoLayout />
       <Infrastructure />
       <AiArchitecture />
+      <Rendering />
       <LabelingTraining />
       <ConfigOperations />
     </main>

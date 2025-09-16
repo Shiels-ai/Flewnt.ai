@@ -43,7 +43,6 @@ const TopNav = () => (
       {[
         { id: "aim", label: "Aim" },
         { id: "goals", label: "Goals" },
-        { id: "motivation", label: "Motivation" },
         { id: "project-summary", label: "Project Summary" },
       ].map((s) => (
         <a

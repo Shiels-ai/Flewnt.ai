@@ -27,6 +27,11 @@ const App: React.FC = () => {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  // Ensure we reset scroll position on route changes (e.g., selecting a project)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [route]);
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900">
       <SiteNav />
