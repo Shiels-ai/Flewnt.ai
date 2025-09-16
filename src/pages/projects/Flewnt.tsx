@@ -171,7 +171,7 @@ const Infrastructure = () => (
           <div>
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Containers</h3>
             <ul className="mt-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>NLP Engine: Based on python:3.9-slim, includes spaCy and fastcoref, served with gunicorn on port 5001.</li>
+              <li>NLP Engine: Based on <code>python:3.9-slim</code>, includes spaCy and fastcoref, served with gunicorn on port 5001.</li>
               <li>Server: Multi-stage build with .NET 8, runs on port 5002.</li>
             </ul>
           </div>
@@ -185,13 +185,13 @@ const Infrastructure = () => (
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Production</h3>
             <ul className="mt-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
               <li>Images pulled from GHCR. Nginx handles TLS on 443 and ACME on 80. Services connected via shared bridge network, proxying to server on 5002.</li>
-              <li>Environment variables from /srv/flewnt/prod.env. Updates managed by pull_and_refresh.sh for rolling deployments.</li>
+              <li>Environment variables from <code>/srv/flewnt/prod.env</code>. Updates managed by <code>pull_and_refresh.sh</code> for rolling deployments.</li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Nginx</h3>
             <ul className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Configured with server_name for flewnt.ai, includes HSTS, security headers, ACME webroot, and proxy to backend server.</li>
+              <li>Configured with <code>server_name</code> for flewnt.ai, includes HSTS, security headers, ACME webroot, and proxy to backend server.</li>
             </ul>
           </div>
         </div>
@@ -226,7 +226,7 @@ const AiArchitecture = () => (
           <div>
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Pipeline</h3>
             <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Utilizes spaCy en_core_web_trf and fastcoref for text cleanup and speaker canonicalization. Applies layered rule-based and heuristic processing over sentence structures, with late filtering and de-duplication based on detected objects.</li>
+              <li>Utilizes spaCy <code>en_core_web_trf</code> and <code>fastcoref</code> for text cleanup and speaker canonicalization. Applies layered rule-based and heuristic processing over sentence structures, with late filtering and de-duplication based on detected objects.</li>
             </ul>
           </div>
           <div>
@@ -307,7 +307,7 @@ const LabelingTraining = () => (
           <div>
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Serving Plan</h3>
             <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Models serve as drop-in replacements behind Flask interface, with A/B testing via AICONFIGURATION__NLP_ENGINE_API_URL.</li>
+              <li>Models serve as drop-in replacements behind Flask interface, with A/B testing via <code>AICONFIGURATION__NLP_ENGINE_API_URL</code>.</li>
             </ul>
           </div>
         </div>
@@ -336,8 +336,8 @@ const ConfigOperations = () => (
           <div>
             <h3 className="font-semibold text-rose-900 dark:text-rose-100">Run Locally</h3>
             <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Using Docker Compose: Set .env and run 'docker compose up --build'.</li>
-              <li>Manual: Start NLP engine with Flask/gunicorn, then 'dotnet run' for server, ensuring correct API URL.</li>
+              <li>Using Docker Compose: Set .env and run <code>docker compose up --build</code>.</li>
+              <li>Manual: Start NLP engine with Flask/gunicorn, then <code>dotnet run</code> for server, ensuring correct API URL.</li>
             </ul>
           </div>
           <div>
@@ -345,7 +345,7 @@ const ConfigOperations = () => (
             <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
               <li>Security features include TLS via Nginx, HSTS, CSP, Firebase JWT verification, and WebSocket origin restrictions.</li>
               <li>Observability through ASP.NET logging and structured stdout logs from NLP engine.</li>
-              <li>Performance managed with chunking and throttling via NLP_ENGINE_CALL_INTERVAL and LLM_CALL_INTERVAL.</li>
+              <li>Performance managed with chunking and throttling via <code>NLP_ENGINE_CALL_INTERVAL</code> and <code>LLM_CALL_INTERVAL</code>.</li>
             </ul>
           </div>
           <div>
