@@ -68,12 +68,10 @@ const TopNav = () => (
     <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
       {[
         { id: "about", label: "About" },
-        { id: "services", label: "Services" },
         { id: "projects", label: "Projects" },
+        { id: "services", label: "Services" },
         { id: "team", label: "Team" },
         { id: "engagement", label: "Engagement" },
-        { id: "why-us", label: "Why Us" },
-        { id: "next-steps", label: "Next Steps" },
       ].map((s) => (
         <a
           key={s.id}
