@@ -43,6 +43,6 @@ The development server runs on `http://localhost:5173/flewnt.ai/` with hot modul
 This project is configured for GitHub Pages deployment:
 
 1. Build and deploy: `yarn deploy`
-2. Visit: https://SamShiels.github.io/Flewnt.ai/
+2. Visit: https://Shiels-ai.github.io/Flewnt.ai/
 
 The deployment script automatically builds the project and pushes to the `gh-pages` branch.
