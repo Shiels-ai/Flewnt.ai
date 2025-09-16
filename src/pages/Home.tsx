@@ -542,7 +542,7 @@ const BackToTop = () => (
 );
 
 const Home = () => (
-  <div className="flex flex-col bg-white dark:bg-slate-900 min-h-screen">
+  <div className="flex flex-col bg-slate-900 min-h-screen">
     <TopNav />
     <main>
       <Hero />

@@ -33,7 +33,7 @@ const App: React.FC = () => {
   }, [route]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900">
+    <div className="min-h-screen bg-slate-900">
       <SiteNav />
       {route.name === "home" && <Home />}
       {route.name === "flewnt" && <Flewnt />}
@@ -41,6 +41,6 @@ const App: React.FC = () => {
       {route.name === "axion" && <Axion />}
           </div>
   );
-};
+}; 
 
 export default App;
