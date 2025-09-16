@@ -429,10 +429,20 @@ const EngagementModels = () => (
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">Hourly Consulting</h3>
           <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc pl-5">
             <li>Flexible engagement for research or advisory.</li>
-            <li>Rates: R525/hour (junior), R795/hour (senior).</li>
+            <li>Competitive hourly rates for different expertise levels:</li>
+            <ul className="ml-4 mt-1 space-y-1">
+              <li>• Intermediate AI Engineer: R525/hour</li>
+              <li>• Senior AI Engineer: R865/hour</li>
+              <li>• Project Manager & Administrator: R385/hour</li>
+            </ul>
           </ul>
         </div>
       </div>
+      <div>
+      <p className="mt-6 text-slate-700 dark:text-slate-300 text-center">
+        Need a custom package? Chat with us to design the ideal engagement model and competitive rates tailored to your project requirements and timeline.
+      </p>
+    </div>
     </div>
   </Section>
 );
@@ -511,6 +521,26 @@ const NextSteps = () => (
   </Section>
 );
 
+// BACK TO TOP
+const BackToTop = () => (
+  <Section className="text-center bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+    <div className="container mx-auto px-4 max-w-4xl flex flex-col items-center">
+      <SmartImage
+        src="./images/shielsai_logo.png"
+        alt="Shiels AI Logo"
+        label="Logo"
+        className="h-10 w-auto mb-4"
+      />
+      <Button
+        className="rounded-full bg-rose-600 hover:bg-rose-700 text-white shadow-md hover:shadow-xl transition-shadow px-6 py-2 font-semibold"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      >
+        Return to the Top
+      </Button>
+    </div>
+  </Section>
+);
+
 const Home = () => (
   <div className="flex flex-col bg-white dark:bg-slate-900 min-h-screen">
     <TopNav />
@@ -521,6 +551,7 @@ const Home = () => (
       <Services />
       <Team />
       <EngagementModels />
+      <BackToTop />
     </main>
   </div>
 );
