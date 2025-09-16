@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "./components/ui/button";
+import { Button } from "../../components/ui/button";
 
 const Section = ({ children, className = "", id = undefined, style = {} }) => (
   <section id={id} className={`py-16 sm:py-24 ${className} transition-all duration-500 ease-in-out`} style={style}>
@@ -77,7 +77,7 @@ const Hero = () => (
       <h1 className="mt-3 font-lato font-extrabold text-4xl sm:text-6xl leading-tight text-rose-900 dark:text-rose-100 heading-accent animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
         Flewnt - Multipass Data Extraction Engine
       </h1>
-      <ul className="mt-6 text-lg sm:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed list-disc pl-5 text-left">
+      <ul className="mt-6 text-lg sm:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed list-disc pl-5 text-center">
         <li>A .NET 8 Web API for processing documents and live audio, extracting domain concepts and data, and generating structured outputs.</li>
       </ul>
       <div className="mt-8 flex flex-wrap justify-center gap-2 text-xs animate-fade-in-up delay-400">
@@ -108,7 +108,6 @@ const Overview = () => (
         <ul className="text-slate-700 dark:text-slate-300 leading-relaxed list-disc pl-5 text-left">
           <li>The backend is implemented using .NET 8 Web API, supporting WebSockets and Firestore for data persistence.</li>
           <li>NLP processing is handled by a Python/Flask engine utilizing spaCy and fastcoref for data extraction.</li>
-          <li>Custom model development from open corpora with multi-model comparison using F1 and similarity scoring.</li>
           <li>LLMs including Gemini and Groq are integrated for data enrichment and transcription. The system runs in Docker containers, proxied by Nginx with Let's Encrypt for TLS.</li>
         </ul>
       </div>
@@ -128,8 +127,9 @@ const Overview = () => (
 
 // REPO LAYOUT
 const RepoLayout = () => (
-  <Section id="repo" className="bg-slate-100 dark:bg-slate-900">
-    <div className="container mx-auto px-4 max-w-6xl">
+  <Section id="repo" className="bg-slate-50 dark:bg-rose-900/20 relative overflow-hidden">
+    <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNIDAgMCBMIDYwIDYwTTEwIDYwIEwgMCA1ME0wIDYwIEwgNTAgME0wIDYwIEwgNjAgNjBNMCA2MCBMIDYwIDAiIHN0cm9rZT0iI2ZhZmZmZiIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI2Ij48L3BhdGg+PC9zdmc+')]"></div>
+    <div className="container mx-auto px-4 max-w-6xl relative z-10">
       <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Repository Layout</h2>
       <ul className="mt-6 text-slate-700 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed list-disc pl-5 text-left">
         <li>The repository is structured into components for the server, AI services, domain models, and deployment configurations.</li>
@@ -294,75 +294,6 @@ const LabelingTraining = () => (
   </Section>
 );
 
-// TEAM
-const Team = () => (
-  <Section
-    id="team"
-    className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden"
-    style={{
-      backgroundImage:
-        "linear-gradient(to bottom, rgba(2,6,23,0.55), rgba(2,6,23,0.35), rgba(2,6,23,0.55)), url('./images/team_background.jpg')",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    }}
-  >
-    <div className="container mx-auto px-4 max-w-6xl">
-      <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100">Team</h2>
-      <p className="mt-4 text-white/90 dark:text-slate-200 max-w-3xl">
-        People building Flewnt.
-      </p>
-      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          {
-            name: "Jack Shiels",
-            role: "AI Technologist & Founder",
-            bio: "Founder at shiels.ai. Builds end‑to‑end LLM/NLP systems; UCL research on time‑series LLMs; ex Trayport & Accenture.",
-            img: "./images/jack.jpeg",
-          },
-          {
-            name: "Lude Tang",
-            role: "Legal & Founder",
-            bio: "UK‑trained legal/admin background; led operations across Malaysian SMEs and construction projects.",
-            img: "./images/lude.jpeg",
-          },
-          {
-            name: "Sam Shiels",
-            role: "Software Engineer & Founder",
-            bio: "Full‑stack engineer (React, Docker, C#, WebGL). SPAN Digital; ex Derivco & FundStream (Cape Town).",
-            img: "./images/sam.jpeg",
-          },
-          {
-            name: "Tiga Chotisorayuth",
-            role: "Advisor — Brand & Marketing",
-            bio: "MBA, Led Agoda’s global brand guidelines; multi‑country campaigns (11M+ impressions); advising GTM & branding.",
-            img: "./images/tiga.jpeg",
-          },
-        ].map((m, i) => (
-          <ProfileCard key={i} name={m.name} role={m.role} bio={m.bio} img={m.img} />
-        ))}
-      </div>
-    </div>
-  </Section>
-);
-
-// BUILD & FLOW
-const BuildFlow = () => (
-  <Section id="build" className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-left">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Application Build & Flow</h2>
-        <ul className="mt-6 text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-          <li>Startup configures services including CORS, Swagger (in dev), Firebase Admin, authentication, and WebSockets.</li>
-          <li>Controllers manage Document, Project, User, Subscription, Output, Miro, and WebSocket endpoints for transcription and output sessions.</li>
-          <li>Persistence via IFirebaseDbFacade, with background TimedOutputSessionCheckService. Authentication uses Firebase token verification, with admin policy support.</li>
-        </ul>
-      </div>
-      <div className="animate-fade-in-up delay-200"><ImagePlaceholder label="API / WebSocket Flow" /></div>
-    </div>
-  </Section>
-);
-
 // CONFIGURATION & OPERATIONS
 const ConfigOperations = () => (
   <Section id="config-operations" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
@@ -458,7 +389,7 @@ const FooterCTA = () => (
 );
 
 const TopNav = () => (
-  <div className="sticky top-0 z-50 border-b border-rose-200/70 dark:border-rose-800 backdrop-blur bg-white/80 dark:bg-rose-950/70 shadow-md">
+  <div className="sticky top-12 z-40 border-b border-rose-200/70 dark:border-rose-800 backdrop-blur bg-white/80 dark:bg-rose-950/70 shadow-md">
     <div className="container mx-auto px-4 container-wide py-3 flex items-center gap-4 text-sm overflow-x-auto">
       {[
         { id: "overview", label: "Overview" },
@@ -469,7 +400,16 @@ const TopNav = () => (
         { id: "labeling", label: "Labeling" },
         { id: "config-operations", label: "Config & Ops" },
       ].map((s) => (
-        <a key={s.id} href={`#${s.id}`} className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium">
+        <a
+          key={s.id}
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            const el = document.getElementById(s.id);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium"
+        >
           {s.label}
         </a>
       ))}
@@ -477,7 +417,59 @@ const TopNav = () => (
   </div>
 );
 
-const Landing = () => (
+// TEAM
+const Team = () => (
+  <Section
+    id="team"
+    className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden"
+    style={{
+      backgroundImage:
+        "linear-gradient(to bottom, rgba(2,6,23,0.55), rgba(2,6,23,0.35), rgba(2,6,23,0.55)), url('./images/team_background.jpg')",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  >
+    <div className="container mx-auto px-4 max-w-6xl">
+      <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100">Team</h2>
+      <p className="mt-4 text-white/90 dark:text-slate-200 max-w-3xl">
+        People building Flewnt.
+      </p>
+      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          {
+            name: "Jack Shiels",
+            role: "AI Technologist & Founder",
+            bio: "Founder at shiels.ai. Builds end‑to‑end LLM/NLP systems; UCL research on time‑series LLMs; ex Trayport & Accenture.",
+            img: "./images/jack.jpeg",
+          },
+          {
+            name: "Lude Tang",
+            role: "Legal & Founder",
+            bio: "UK‑trained legal/admin background; led operations across Malaysian SMEs and construction projects.",
+            img: "./images/lude.jpeg",
+          },
+          {
+            name: "Sam Shiels",
+            role: "Software Engineer & Founder",
+            bio: "Full‑stack engineer (React, Docker, C#, WebGL). SPAN Digital; ex Derivco & FundStream (Cape Town).",
+            img: "./images/sam.jpeg",
+          },
+          {
+            name: "Tiga Chotisorayuth",
+            role: "Advisor — Brand & Marketing",
+            bio: "MBA, Led Agoda’s global brand guidelines; multi‑country campaigns (11M+ impressions); advising GTM & branding.",
+            img: "./images/tiga.jpeg",
+          },
+        ].map((m, i) => (
+          <ProfileCard key={i} name={m.name} role={m.role} bio={m.bio} img={m.img} />
+        ))}
+      </div>
+    </div>
+  </Section>
+);
+
+const Flewnt: React.FC = () => (
   <div className="flex flex-col bg-white dark:bg-slate-900 min-h-screen">
     <TopNav />
     <main>
@@ -493,4 +485,5 @@ const Landing = () => (
   </div>
 );
 
-export default Landing;
+export default Flewnt;
+

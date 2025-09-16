@@ -4,7 +4,7 @@
 
 
 body {
-font-family: theme("fontFamily.lato");
+  font-family: theme("fontFamily.serif");
 }
 
 /* Minimal, professional animations and utilities */
