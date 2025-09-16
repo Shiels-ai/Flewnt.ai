@@ -87,9 +87,10 @@ const Hero = () => (
         Leveraging AI/ML to optimize energy use, indoor air quality, and occupancy management in modular buildings.
       </ul>
       <div className="mt-8 flex flex-wrap justify-center gap-2 text-xs animate-fade-in-up delay-400">
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '0ms' }}>ASP.Net</span>
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '200ms' }}>C#</span>
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '400ms' }}>Azure</span>
+        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '0ms' }}>LLMs for Time Series</span>
+        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '200ms' }}>Fine-Tuning</span>
+        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '400ms' }}>AI Agents</span>
+        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '400ms' }}>Human-in-the-Loop</span>
       </div>
       <div className="mt-12 animate-fade-in-up delay-600">
         <div className="relative overflow-hidden rounded-2xl tilt hover:rotate-1 transition-transform duration-300">
