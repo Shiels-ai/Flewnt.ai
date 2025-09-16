@@ -55,18 +55,13 @@ body {
 }
 .ken-burns { animation: kenBurns 24s ease-in-out infinite; }
 
-/* Accent underline for headings */
+/* Accent underline for headings (disabled) */
 .heading-accent {
   position: relative;
   display: inline-block;
 }
 .heading-accent::after {
-  content: "";
-  position: absolute;
-  left: 0; bottom: -6px;
-  width: 48px; height: 3px;
-  background: linear-gradient(90deg, #0ea5e9, #22c55e);
-  border-radius: 9999px;
+  content: none; /* remove short underline */
 }
 
 /* Subtle card */

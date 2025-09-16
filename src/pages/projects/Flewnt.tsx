@@ -422,7 +422,7 @@ const FooterCTA = () => (
 
 const TopNav = () => (
   <div className="sticky top-12 z-40 border-b border-rose-200/70 dark:border-rose-800 backdrop-blur bg-white/80 dark:bg-rose-950/70 shadow-md">
-    <div className="container mx-auto px-4 container-wide py-3 flex items-center gap-4 text-sm overflow-x-auto">
+    <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
       {[
         { id: "overview", label: "Overview" },
         { id: "team", label: "Team" },
@@ -520,4 +520,3 @@ const Flewnt: React.FC = () => (
 );
 
 export default Flewnt;
-
