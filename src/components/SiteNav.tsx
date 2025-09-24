@@ -1,4 +1,6 @@
 import React from "react";
+import ContactModal from "./ContactModal";
+import { Button } from "./ui/button";
 
 const SiteNav: React.FC = () => {
   const Link = ({ href, children }: { href: string; children: React.ReactNode }) => (
@@ -10,6 +12,7 @@ const SiteNav: React.FC = () => {
     </a>
   );
 
+  const headerRef = React.useRef<HTMLElement | null>(null);
   const [open, setOpen] = React.useState(false);
   const closeTimer = React.useRef<number | null>(null);
   const scheduleClose = () => {
@@ -20,8 +23,30 @@ const SiteNav: React.FC = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
     closeTimer.current = null;
   };
+  const [contactOpen, setContactOpen] = React.useState(false);
+  const closeContact = () => setContactOpen(false);
+
+  React.useEffect(() => {
+    const headerEl = headerRef.current;
+    if (!headerEl) return;
+
+    const updateHeight = () => {
+      document.documentElement.style.setProperty(
+        "--site-nav-height",
+        `${headerEl.offsetHeight}px`
+      );
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/80 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50 bg-white/85 dark:bg-slate-900/80 backdrop-blur border-b border-slate-200 dark:border-slate-800"
+    >
       <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-6">
         <a href="#/" className="flex items-center gap-2">
           <img src="./images/shielsai_logo.png" alt="Shiels AI" className="h-6 w-auto" />
@@ -60,8 +85,17 @@ const SiteNav: React.FC = () => {
             )}
           </div>
         </nav>
-        <div className="ml-auto text-xs text-slate-500 dark:text-slate-400">Shiels AI — Service Offering</div>
+        <div className="ml-auto">
+          <Button
+            type="button"
+            onClick={() => setContactOpen(true)}
+            className="rounded-full bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500 dark:bg-rose-500 dark:hover:bg-rose-400 dark:focus:ring-rose-300"
+          >
+            Contact Us
+          </Button>
+        </div>
       </div>
+      <ContactModal open={contactOpen} onClose={closeContact} />
     </header>
   );
 };

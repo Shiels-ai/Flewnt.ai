@@ -4,11 +4,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        // Use a site-wide serif typeface
-        serif: ["Source Serif 4", "ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"],
-        // Map existing aliases to the serif to ensure consistent typography
-        lato: ["Source Serif 4", "ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"],
-        onest: ["Source Serif 4", "ui-serif", "Georgia", "Cambria", "Times New Roman", "serif"],
+        // Space Grotesk delivers a crisp, modern tech aesthetic site-wide
+        sans: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        serif: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        lato: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        onest: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
       },
     },
   },

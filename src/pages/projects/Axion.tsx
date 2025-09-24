@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../../components/ui/button";
+import useFixedOffset from "../../hooks/useFixedOffset";
 
 // Reusable components from your template
 const Section = ({ children, className = "", id = undefined, style = {} }) => (
@@ -39,31 +40,42 @@ const SmartImage = ({ src, alt, label, className }) => {
 };
 
 // Navigation specific to the Axion project page
-const TopNav = () => (
-  <div className="sticky top-12 z-40 border-b border-rose-200/70 dark:border-rose-800 backdrop-blur bg-white/80 dark:bg-rose-950/70 shadow-md">
-    <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
-      {[
-        { id: "overview", label: "Overview" },
-        { id: "features", label: "Key Features" },
-        { id: "technology", label: "Technology" },
-        { id: "workflow", label: "Workflow" },
-      ].map((s) => (
-        <a
-          key={s.id}
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            const el = document.getElementById(s.id);
-            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-          }}
-          className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium"
-        >
-          {s.label}
-        </a>
-      ))}
-    </div>
-  </div>
-);
+const TopNav = () => {
+  const { ref: navRef, spacerHeight } = useFixedOffset();
+
+  return (
+    <>
+      <div aria-hidden style={{ height: spacerHeight }} />
+      <div
+        ref={navRef}
+        className="fixed left-0 right-0 z-40 border-b border-rose-200/70 dark:border-rose-800 backdrop-blur bg-white/80 dark:bg-rose-950/70 shadow-md"
+        style={{ top: "var(--site-nav-height, 64px)" }}
+      >
+        <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
+          {[
+            { id: "overview", label: "Overview" },
+            { id: "features", label: "Key Features" },
+            { id: "technology", label: "Technology" },
+            { id: "workflow", label: "Workflow" },
+          ].map((s) => (
+            <a
+              key={s.id}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById(s.id);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium"
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
 
 // HERO
 const Hero = () => (

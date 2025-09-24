@@ -46,3 +46,10 @@ This project is configured for GitHub Pages deployment:
 2. Visit: https://Shiels-ai.github.io/Flewnt.ai/
 
 The deployment script automatically builds the project and pushes to the `gh-pages` branch.
+
+### Contact Form Integration
+
+- The navigation's **Contact Us** entry toggles `src/components/ContactModal.tsx`, which mirrors the enquiry workflow from the legacy `enquire.tsx` page (honeypot, validation, optimistic UI, and `/api/submit` POST).
+- Google reCAPTCHA v3 loads via `RecaptchaProvider` (`src/contexts/RecaptchaContext.tsx`). Expose your key through `VITE_RECAPTCHA_SITE_KEY` in `.env` when running locally or deploying.
+- The modal posts JSON `{ name, phone, email, project, company, recaptchaToken }` to `/api/submit` and expects a JSON response with an optional `message` string.
+- When verifying the integration, exercise success and failure flows: invalid email, non-numeric phone, missing fields, and requests with the honeypot populated.
