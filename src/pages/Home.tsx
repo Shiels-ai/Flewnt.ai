@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "../components/ui/button";
 import useFixedOffset from "../hooks/useFixedOffset";
 
@@ -46,8 +46,423 @@ const CirclePlaceholder = ({ label = "Photo", className = "" }) => (
   </div>
 );
 
-const ProfileCard = ({ name, role, bio, img }) => (
-  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-center shadow-sm hover:shadow-md transition-shadow">
+const SparkIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    aria-hidden
+  >
+    <path
+      d="M12 2.5l2.12 5.64 5.88.46-4.54 3.72 1.52 5.74L12 14.88l-4.98 3.18 1.52-5.74-4.54-3.72 5.88-.46L12 2.5z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+const CompassIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    aria-hidden
+  >
+    <path
+      fill="currentColor"
+      d="M12 2a10 10 0 100 20 10 10 0 000-20zm2.92 6.08l-1.2 4.21a1 1 0 01-.69.69l-4.21 1.2 1.2-4.21a1 1 0 01.69-.69l4.21-1.2z"
+    />
+  </svg>
+);
+
+const CircuitIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    className="h-5 w-5"
+    aria-hidden
+  >
+    <path
+      fill="currentColor"
+      d="M17 4a3 3 0 00-2.83 2H9.83A3 3 0 007 4a3 3 0 00-3 3 3 3 0 002 2.83v4.34A3 3 0 004 17a3 3 0 003 3 3 3 0 002.83-2h4.34A3 3 0 0017 20a3 3 0 003-3 3 3 0 00-2-2.83V9.83A3 3 0 0020 7a3 3 0 00-3-3zm-10 2a1 1 0 110 2 1 1 0 010-2zm0 12a1 1 0 110-2 1 1 0 010 2zm10-2a1 1 0 110 2 1 1 0 010-2zm0-8a1 1 0 110-2 1 1 0 010 2z"
+    />
+  </svg>
+);
+
+const founderProfiles = [
+  {
+    name: "Jack Shiels",
+    role: "Founder & CEO",
+    bio: "AI technologist; UCL research; LLM/NLP & full-stack.",
+    img: "./images/jack.jpeg",
+    headline: "Founder-engineer delivering regulated LLM platforms end to end.",
+    intro:
+      "Jack leads shiels.ai engagements, pairing UCL research credentials with product leadership to launch multilingual LLM services that satisfy real-world compliance and performance demands.",
+    highlights: [
+      {
+        icon: SparkIcon,
+        title: "LLM Product Delivery",
+        description: "Owns discovery through launch for generative AI products serving infrastructure, fintech, and healthcare teams.",
+      },
+      {
+        icon: CircuitIcon,
+        title: "Infrastructure Orchestration",
+        description: "Deploys secure hybrid-cloud pipelines covering ingestion, fine-tuning, evaluation, and monitoring.",
+      },
+      {
+        icon: CompassIcon,
+        title: "Commercial Acceleration",
+        description: "Aligns go-to-market, client success, and technical strategy to grow early-stage AI offerings.",
+      },
+    ],
+    experience: [
+      {
+        title: "Founder",
+        organisation: "shiels.ai",
+        period: "May 2024 — Present",
+        achievements: [
+          "Architects bespoke LLM and NLP solutions spanning retrieval pipelines, evaluation harnesses, and human-in-the-loop tooling.",
+          "Sets commercial strategy, client acquisition, and delivery operations for multi-sector AI programmes.",
+          "Runs data pipelines for fine-tuning and proprietary model training aligned to measurable client KPIs.",
+        ],
+      },
+      {
+        title: "AI Software Engineer & Researcher",
+        organisation: "University College London",
+        period: "Jun 2024 — Mar 2025",
+        achievements: [
+          "Prototyped time-series aware LLM techniques with PyTorch, Hugging Face, and custom evaluation suites.",
+          "Fine-tuned open-source models and shipped orchestration code into live pilots across mixed compute estates.",
+          "Presented findings to academic and industry stakeholders to steer experimentation roadmaps.",
+        ],
+      },
+      {
+        title: "Software Developer",
+        organisation: "Trayport",
+        period: "Aug 2022 — Apr 2024",
+        achievements: [
+          "Delivered production features across C#, ASP.NET Core, and React front-ends for energy trading platforms.",
+          "Implemented automated testing pipelines and monitored releases serving global operators.",
+          "Partnered with product teams to shape requirements and coordinate fast-turnaround client fixes.",
+        ],
+      },
+      {
+        title: "Technology Delivery Analyst",
+        organisation: "REPL Group (Accenture)",
+        period: "Jan 2022 — Aug 2022",
+        achievements: [
+          "Documented enterprise retail architecture and integration patterns for large-scale operations rollouts.",
+          "Produced cloud solution designs and gained AWS Cloud Practitioner and Azure Fundamentals certifications.",
+        ],
+      },
+    ],
+    skills: "LLM Product Delivery • Cloud Orchestration • Product Leadership",
+    link: "https://www.linkedin.com/in/jackshiels/",
+  },
+  {
+    name: "Sam Shiels",
+    role: "Founder & CTO",
+    bio: "Software engineer; React, Docker, WebGL; SPAN/Derivco.",
+    img: "./images/sam.jpeg",
+    headline: "Systems engineer crafting immersive cloud-native experiences for partners.",
+    intro:
+      "Sam blends creative coding with DevOps discipline, shipping React, WebGL, and containerised services that make complex data intuitive for enterprise and startup clients.",
+    highlights: [
+      {
+        icon: SparkIcon,
+        title: "Interactive Platforms",
+        description: "Designs responsive interfaces with React, WebGL, and real-time visualisation tailored to each engagement.",
+      },
+      {
+        icon: CircuitIcon,
+        title: "Cloud & DevOps",
+        description: "Containers applications with Docker and modern CI/CD, wiring observability into every deployment.",
+      },
+      {
+        icon: CompassIcon,
+        title: "Technical Leadership",
+        description: "Mentors squads from discovery to launch, aligning architecture with business strategy and user outcomes.",
+      },
+    ],
+    experience: [
+      {
+        title: "Software Engineer II",
+        organisation: "SPAN Digital Innovation",
+        period: "Jun 2022 — Present",
+        achievements: [
+          "Leads front-end architecture for hybrid web/mobile products serving large international audiences.",
+          "Implements containerised delivery pipelines with Docker, GitHub Actions, and cloud-native infrastructure.",
+          "Partners with design and product teams to scope features, uphold accessibility, and manage delivery risk.",
+        ],
+      },
+      {
+        title: "Software Developer",
+        organisation: "Derivco",
+        period: "Jan 2020 — Jun 2022",
+        achievements: [
+          "Developed high-performance gaming and analytics interfaces using Vue.js, WebGL, and TypeScript.",
+          "Optimised service reliability and instrumentation for global gaming platforms.",
+          "Collaborated across distributed squads to deliver roadmap increments on tight release cadences.",
+        ],
+      },
+      {
+        title: "Software Developer",
+        organisation: "FundStream",
+        period: "May 2019 — Dec 2019",
+        achievements: [
+          "Built C# and AngularJS components for financial compliance and reporting workflows.",
+          "Integrated third-party data sources while maintaining secure handling and audit trails.",
+          "Supported client rollouts with rapid bug triage and fixes during critical launch windows.",
+        ],
+      },
+    ],
+    skills: "React & WebGL Interfaces • Cloud DevOps • Systems Integration",
+    link: "https://www.linkedin.com/in/sam-shiels-6270661a4/",
+  },
+  {
+    name: "Lude Tang",
+    role: "Founder & CCO",
+    bio: "Legal & compliance; operations across UK/Malaysia.",
+    img: "./images/lude.jpeg",
+    headline: "Operations lead aligning cross-border compliance for AI ventures.",
+    intro:
+      "Lude leverages legal training and operational rigour to stand up compliant, cross-border operations so founders can scale AI programmes without regulatory surprises.",
+    highlights: [
+      {
+        icon: CompassIcon,
+        title: "Regulatory Stewardship",
+        description: "Guides incorporation, licensing, and corporate governance for AI startups operating across Malaysia and beyond.",
+      },
+      {
+        icon: CircuitIcon,
+        title: "Operational Enablement",
+        description: "Builds vendor networks, manages filings, and enforces repeatable processes across finance, legal, and admin workflows.",
+      },
+      {
+        icon: SparkIcon,
+        title: "Legal Insight",
+        description: "Translates legal research into practical risk management for founders and client engagements.",
+      },
+    ],
+    experience: [
+      {
+        title: "Co-Founder & Operations Lead",
+        organisation: "shiels.ai",
+        period: "May 2025 — Present",
+        achievements: [
+          "Owns end-to-end incorporation, licensing, and ongoing compliance for shiels.ai’s Malaysia operations.",
+          "Selects and manages professional partners including company secretaries, auditors, and legal advisors.",
+          "Implements operational cadences covering filings, risk registers, and cross-border business development support.",
+        ],
+      },
+      {
+        title: "Executive Administration",
+        organisation: "Grace Construction Entreprise",
+        period: "Jan 2020 — Jan 2023",
+        achievements: [
+          "Ran documentation, correspondence, and filing for multi-site housing development programmes.",
+          "Coordinated bankers, legal advisors, suppliers, and contractors to keep projects compliant and on schedule.",
+          "Prepared payment records, regulatory submissions, and financial reporting packs for leadership.",
+        ],
+      },
+      {
+        title: "Pro Bono Student Legal Advisor",
+        organisation: "Northumbria University",
+        period: "Sep 2020 — Jun 2021",
+        achievements: [
+          "Provided supervised commercial dispute support within the Northumbria Student Law Office.",
+          "Conducted client interviews, drafted advice notes, and curated mediation strategies.",
+          "Collaborated on case strategy and presented recommendations to supervising solicitors.",
+        ],
+      },
+    ],
+    skills: "Regulatory Compliance • Operational Governance • Stakeholder Management",
+    link: "https://www.linkedin.com/in/lude-t-4a15b127b/",
+  },
+];
+
+const FounderExperiencePanel = ({ founder, open, onClose }) => {
+  const [shouldRender, setShouldRender] = useState(false);
+  const closeButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (open && founder) {
+      setShouldRender(true);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => {
+      setShouldRender(false);
+    }, 320);
+    return () => window.clearTimeout(timer);
+  }, [open, founder]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    if (typeof document === "undefined") return undefined;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (open && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [open]);
+
+  if (!founder || !shouldRender) return null;
+
+  const headingId = `founder-experience-${founder.name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")}`;
+
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center px-4 py-8 sm:py-12 ${
+        open ? "pointer-events-auto" : "pointer-events-none"
+      }`}
+      aria-hidden={!open}
+    >
+      <div
+        className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-out ${open ? "opacity-100" : "opacity-0"}`}
+        onClick={onClose}
+      />
+      <div
+        className={`pointer-events-auto relative w-full max-w-5xl transition-all duration-500 ease-out ${
+          open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+        }`}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={headingId}
+          className="rounded-3xl border border-rose-200/60 dark:border-rose-900/50 bg-white/95 dark:bg-slate-950/95 shadow-2xl overflow-hidden max-h-[calc(100vh-6rem)] flex flex-col"
+        >
+          <div className="absolute inset-x-0 h-36 bg-gradient-to-r from-rose-100 via-rose-50 to-transparent dark:from-rose-900/40 dark:via-rose-900/20 blur-3xl opacity-70" aria-hidden />
+          <div className="relative flex-1 overflow-y-auto p-6 sm:p-8 md:p-10">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">Founder Experience</span>
+                <h3
+                  id={headingId}
+                  className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight"
+                >
+                  {founder.name}
+                </h3>
+                <p className="text-sm uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">
+                  {founder.role}
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                onClick={onClose}
+                ref={closeButtonRef}
+                className="self-start rounded-full border-rose-200 text-rose-700 hover:text-rose-900 hover:border-rose-300 dark:text-rose-100 dark:border-rose-900/70"
+              >
+                Close
+              </Button>
+            </div>
+            <p className="mt-4 text-base text-slate-700 dark:text-slate-200 max-w-3xl leading-relaxed animate-slide-up">
+              {founder.headline}
+            </p>
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+              {founder.intro}
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {founder.highlights.map((highlight, index) => {
+                const Icon = highlight.icon;
+                return (
+                  <div
+                    key={index}
+                    className="group relative overflow-hidden rounded-2xl border border-rose-100/60 dark:border-rose-900/40 bg-gradient-to-br from-white via-rose-50/60 to-white dark:from-slate-900 dark:via-rose-950/40 dark:to-slate-900 p-5 shadow-sm hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-3">
+                      <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-200 shadow-inner">
+                        <Icon />
+                      </span>
+                      <div>
+                        <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                          {highlight.title}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-600 dark:text-slate-300 leading-normal">
+                          {highlight.description}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="absolute -bottom-10 -right-10 h-28 w-28 rounded-full bg-rose-200/40 dark:bg-rose-900/40 blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300" aria-hidden />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start">
+              <div className="space-y-6">
+                {founder.experience.map((exp, index) => (
+                  <div
+                    key={index}
+                    className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 backdrop-blur-sm p-5"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div>
+                        <p className="font-semibold text-slate-900 dark:text-white">
+                          {exp.title}
+                        </p>
+                        <p className="text-sm text-rose-600 dark:text-rose-300">{exp.organisation}</p>
+                      </div>
+                      <span className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                        {exp.period}
+                      </span>
+                    </div>
+                    <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      {exp.achievements.map((item, idx) => (
+                        <li key={idx} className="flex gap-2">
+                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              <div className="relative order-first lg:order-none">
+                <div className="relative overflow-hidden rounded-3xl border border-rose-100/70 dark:border-rose-900/60 bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-rose-950 dark:via-slate-900 dark:to-rose-950/70 p-4 shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-rose-200/30 dark:from-rose-900/20 dark:via-transparent dark:to-rose-950/40" aria-hidden />
+                  <SmartImage
+                    src={founder.img}
+                    alt={`${founder.name} portrait`}
+                    label="Founder portrait"
+                    className="relative w-full rounded-2xl object-cover aspect-[4/5]"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-rose-100/70 dark:border-rose-900/50 pt-4">
+              <div>
+                <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">Focus Areas</span>
+                <p className="mt-1 text-sm text-slate-700 dark:text-slate-200 font-medium">
+                  {founder.skills}
+                </p>
+              </div>
+              <a
+                href={founder.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-rose-600 text-white px-5 py-2 text-sm font-semibold shadow-lg shadow-rose-600/30 hover:bg-rose-700 transition-colors"
+              >
+                View on LinkedIn
+                <span aria-hidden className="text-base">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ProfileCard = ({ name, role, bio, img, onViewExperience }) => (
+  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-center shadow-sm hover:shadow-md transition-shadow flex flex-col items-center">
     {img ? (
       <SmartImage
         src={img}
@@ -61,6 +476,14 @@ const ProfileCard = ({ name, role, bio, img }) => (
     <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">{name}</h3>
     <p className="text-xs uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">{role}</p>
     <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{bio}</p>
+    <Button
+      variant="outline"
+      className="mt-4 text-xs uppercase tracking-wide border-rose-200 text-rose-700 hover:text-rose-900 hover:border-rose-300 dark:text-rose-200 dark:border-rose-800 dark:hover:text-rose-100"
+      onClick={onViewExperience}
+      type="button"
+    >
+      View Experience
+    </Button>
   </div>
 );
 
@@ -606,57 +1029,75 @@ const KeyProjects = () => {
 };
 
 // TEAM
-const Team = () => (
-  <Section
-    id="team"
-    className="relative overflow-hidden bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800"
-  >
-    <div className="absolute inset-0 z-0 overflow-hidden">
-      <SmartImage
-        src="./images/code_background.jpg"
-        alt="Code background texture"
-        label="Code background"
-        className="h-full w-full object-cover object-center opacity-80"
-      />
-    </div>
-    <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/85 via-white/70 to-white/60 dark:from-slate-950/85 dark:via-slate-950/70 dark:to-slate-950/60" />
-    <div className="container mx-auto px-4 max-w-6xl relative z-20">
-      <h2
-        className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 animate-slide-up"
-        style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}
-      >
-        Team
-      </h2>
-      <p className="mt-4 text-slate-700 dark:text-slate-200 max-w-3xl">
-        shiels.ai is founded by Jack, Lude, and Sam.
-      </p>
-      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          {
-            name: "Jack Shiels",
-            role: "Founder & CEO",
-            bio: "AI technologist; UCL research; LLM/NLP & full-stack.",
-            img: "./images/jack.jpeg",
-          },
-          {
-            name: "Sam Shiels",
-            role: "Founder & CTO",
-            bio: "Software engineer; React, Docker, WebGL; SPAN/Derivco.",
-            img: "./images/sam.jpeg",
-          },
-          {
-            name: "Lude Tang",
-            role: "Founder & CCO",
-            bio: "Legal & compliance; operations across UK/Malaysia.",
-            img: "./images/lude.jpeg",
-          },
-        ].map((m, i) => (
-          <ProfileCard key={i} name={m.name} role={m.role} bio={m.bio} img={m.img} />
-        ))}
+const Team = () => {
+  const [activeFounder, setActiveFounder] = useState(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
+  const openPanel = (founder) => {
+    setActiveFounder(founder);
+    setIsPanelOpen(true);
+  };
+
+  const closePanel = () => {
+    setIsPanelOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isPanelOpen) return undefined;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        closePanel();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isPanelOpen]);
+
+  return (
+    <Section
+      id="team"
+      className="relative overflow-hidden bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800"
+    >
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <SmartImage
+          src="./images/code_background.jpg"
+          alt="Code background texture"
+          label="Code background"
+          className="h-full w-full object-cover object-center opacity-80"
+        />
       </div>
-    </div>
-  </Section>
-);
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/85 via-white/70 to-white/60 dark:from-slate-950/85 dark:via-slate-950/70 dark:to-slate-950/60" />
+      <div className="container mx-auto px-4 max-w-6xl relative z-20">
+        <h2
+          className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 animate-slide-up"
+          style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}
+        >
+          Team
+        </h2>
+        <p className="mt-4 text-slate-700 dark:text-slate-200 max-w-3xl">
+          shiels.ai is founded by Jack, Lude, and Sam.
+        </p>
+        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {founderProfiles.map((founder) => (
+            <ProfileCard
+              key={founder.name}
+              name={founder.name}
+              role={founder.role}
+              bio={founder.bio}
+              img={founder.img}
+              onViewExperience={() => openPanel(founder)}
+            />
+          ))}
+        </div>
+      </div>
+      <FounderExperiencePanel
+        founder={activeFounder}
+        open={isPanelOpen}
+        onClose={closePanel}
+      />
+    </Section>
+  );
+};
 
 // ENGAGEMENT MODELS
 const EngagementModels = () => (
