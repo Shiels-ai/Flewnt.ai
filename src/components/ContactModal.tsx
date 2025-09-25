@@ -49,6 +49,17 @@ const ContactModal: React.FC<ContactModalProps> = ({ open, onClose }) => {
   }, [open]);
 
   useEffect(() => {
+    if (typeof document === "undefined") return;
+    const className = "show-recaptcha-badge";
+    if (open) {
+      document.body.classList.add(className);
+    } else {
+      document.body.classList.remove(className);
+    }
+    return () => document.body.classList.remove(className);
+  }, [open]);
+
+  useEffect(() => {
     if (!open) return;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();

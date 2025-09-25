@@ -108,3 +108,17 @@ code {
   border-color: rgba(71, 85, 105, 0.4);
   color: #e2e8f0;
 } 
+
+/* ReCAPTCHA badge visibility is tied to the contact modal state */
+.grecaptcha-badge {
+  transition: opacity 250ms ease, transform 250ms ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 8px, 0);
+}
+
+body.show-recaptcha-badge .grecaptcha-badge {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0);
+}
