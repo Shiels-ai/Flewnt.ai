@@ -1124,12 +1124,7 @@ const EngagementModels = () => (
           <h3 className="font-semibold text-slate-900 dark:text-slate-100">Hourly Consulting</h3>
           <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc pl-5">
             <li>Flexible engagement for research or advisory.</li>
-            <li>Competitive hourly rates for different expertise levels:</li>
-            <ul className="ml-4 mt-1 space-y-1">
-              <li>• Intermediate AI Engineer: R525/hour</li>
-              <li>• Senior AI Engineer: R865/hour</li>
-              <li>• Project Manager & Administrator: R385/hour</li>
-            </ul>
+            <li>Competitive hourly rates for different expertise levels</li>
           </ul>
         </div>
       </div>
