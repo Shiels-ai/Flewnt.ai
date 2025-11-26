@@ -1,23 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Post {
-  slug: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    thumbnail?: string;
-  };
-}
+import { getPosts, type Post } from '../utils/postLoader';
 
 const BlogIndex = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    fetch('/posts.json')
-      .then(response => response.json())
-        .then(data => setPosts(data));
-  }, []);
+  const posts: Post[] = getPosts();
 
   return (
     <div className="container mx-auto px-4 py-8">

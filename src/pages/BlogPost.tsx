@@ -1,33 +1,14 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-
-interface Post {
-  slug: string;
-  frontmatter: {
-    title: string;
-    date: string;
-    thumbnail?: string;
-  };
-  content: string;
-}
+import { getPostBySlug, type Post } from '../utils/postLoader';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [post, setPost] = useState<Post | null>(null);
-
-  useEffect(() => {
-    fetch('/posts.json')
-      .then(response => response.json())
-      .then(data => {
-        const currentPost = data.find((p: Post) => p.slug === slug);
-        setPost(currentPost);
-      });
-  }, [slug]);
+  const post: Post | undefined = slug ? getPostBySlug(slug) : undefined;
 
   if (!post) {
-    return <div>Loading...</div>;
+    return <div>Post not found.</div>;
   }
 
   return (
