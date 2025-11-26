@@ -53,6 +53,7 @@ const SiteNav: React.FC = () => {
         </a>
         <nav className="flex items-center gap-4 text-sm relative">
           <Link href="#/">Home</Link>
+          <Link href="#/blog">Blog</Link>
           <div
             className="relative"
             onMouseEnter={() => { cancelClose(); setOpen(true); }}

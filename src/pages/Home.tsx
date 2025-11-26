@@ -500,10 +500,10 @@ const TopNav = () => {
       >
         <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
           {[
-            { id: "about", label: "About" },
-            { id: "projects", label: "Projects" },
             { id: "services", label: "Services" },
+            { id: "projects", label: "Projects" },
             { id: "team", label: "Team" },
+            { id: "about", label: "About" },
             { id: "engagement", label: "Engagement" },
           ].map((s) => (
             <a
@@ -1020,6 +1020,27 @@ const KeyProjects = () => {
                   className="h-80 w-full object-cover"
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-rose-200/70 bg-white/80 p-6 text-center shadow-[0_18px_40px_rgba(244,114,182,0.15)] dark:border-rose-900/50 dark:bg-rose-950/50">
+            <p className="text-xs uppercase tracking-[0.35em] text-rose-500 dark:text-rose-200/80">
+              Field notes
+            </p>
+            <h3 className="mt-2 text-2xl font-semibold text-rose-900 dark:text-rose-100">
+              Want a closer look at what we're building?
+            </h3>
+            <p className="mt-3 text-sm text-rose-800/80 dark:text-rose-100/80 leading-relaxed max-w-3xl mx-auto">
+              We document experiments, shipping rituals, and delivery lessons on our blog so partners can follow how we turn research into production wins.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <a
+                href="#/blog"
+                className="inline-flex items-center gap-2 rounded-full bg-rose-600 px-5 py-2 text-sm font-semibold text-white transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-rose-950"
+              >
+                Visit the blog
+                <span aria-hidden>↗</span>
+              </a>
             </div>
           </div>
         </div>

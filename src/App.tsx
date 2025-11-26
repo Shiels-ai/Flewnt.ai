@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import SiteNav from "./components/SiteNav";
 import Home from "./pages/Home";
+import Blog from "./pages/Blog";
 import Flewnt from "./pages/projects/Flewnt";
 import Trust2 from "./pages/projects/Trust2";
 import Axion from "./pages/projects/Axion";
 
 type Route = 
   | { name: "home" }
+  | { name: "blog" }
   | { name: "flewnt" }
   | { name: "trust2" }
   | { name: "axion" };
 
 function parseHash(): Route {
   const hash = window.location.hash.replace(/^#/, "");
+  if (hash.startsWith("/blog")) return { name: "blog" };
   if (hash.startsWith("/projects/flewnt")) return { name: "flewnt" };
   if (hash.startsWith("/projects/trust2")) return { name: "trust2" };
   if (hash.startsWith("/projects/axion")) return { name: "axion" };
@@ -36,6 +39,7 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-slate-900">
       <SiteNav />
       {route.name === "home" && <Home />}
+      {route.name === "blog" && <Blog />}
       {route.name === "flewnt" && <Flewnt />}
       {route.name === "trust2" && <Trust2 />}
       {route.name === "axion" && <Axion />}
