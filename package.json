@@ -7,14 +7,20 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predev": "node scripts/generate-posts-json.mjs",
+    "prebuild": "node scripts/generate-posts-json.mjs",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist -r https://github.com/Shiels-ai/Flewnt.ai.git"
   },
   "dependencies": {
     "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.9.6",
+    "rehype-raw": "^7.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",

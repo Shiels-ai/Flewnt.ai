@@ -1,46 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { HashRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import SiteNav from "./components/SiteNav";
 import Home from "./pages/Home";
 import Flewnt from "./pages/projects/Flewnt";
 import Trust2 from "./pages/projects/Trust2";
 import Axion from "./pages/projects/Axion";
+import BlogIndex from "./pages/BlogIndex";
+import BlogPost from "./pages/BlogPost";
 
-type Route = 
-  | { name: "home" }
-  | { name: "flewnt" }
-  | { name: "trust2" }
-  | { name: "axion" };
-
-function parseHash(): Route {
-  const hash = window.location.hash.replace(/^#/, "");
-  if (hash.startsWith("/projects/flewnt")) return { name: "flewnt" };
-  if (hash.startsWith("/projects/trust2")) return { name: "trust2" };
-  if (hash.startsWith("/projects/axion")) return { name: "axion" };
-    return { name: "home" };
-}
-
-const App: React.FC = () => {
-  const [route, setRoute] = useState<Route>(parseHash());
-  useEffect(() => {
-    const onHash = () => setRoute(parseHash());
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
-
-  // Ensure we reset scroll position on route changes (e.g., selecting a project)
+const ScrollToTop = () => {
+  const location = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, [route]);
+  }, [location]);
+  return null;
+};
 
-  return (
+const App: React.FC = () => (
+  <HashRouter>
+    <ScrollToTop />
     <div className="min-h-screen bg-slate-900">
       <SiteNav />
-      {route.name === "home" && <Home />}
-      {route.name === "flewnt" && <Flewnt />}
-      {route.name === "trust2" && <Trust2 />}
-      {route.name === "axion" && <Axion />}
-          </div>
-  );
-}; 
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/projects/flewnt" element={<Flewnt />} />
+        <Route path="/projects/trust2" element={<Trust2 />} />
+        <Route path="/projects/axion" element={<Axion />} />
+        <Route path="/blog" element={<BlogIndex />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </div>
+  </HashRouter>
+);
 
 export default App;
