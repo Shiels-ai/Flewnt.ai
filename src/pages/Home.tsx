@@ -40,7 +40,7 @@ const SmartImage = ({ src, alt, label, className }) => {
 
 const CirclePlaceholder = ({ label = "Photo", className = "" }) => (
   <div
-    className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center text-slate-500 dark:text-slate-300 text-sm font-medium ${className}`}
+    className={`w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center text-slate-500 dark:text-slate-300 text-sm font-medium ${className}`}
   >
     {label}
   </div>
@@ -94,24 +94,27 @@ const founderProfiles = [
     role: "Founder & CEO",
     bio: "AI technologist; UCL research; LLM/NLP & full-stack.",
     img: "./images/jack.jpeg",
-    headline: "Founder-engineer delivering regulated LLM platforms end to end.",
+    headline: "Founder-engineer building reliable LLM systems.",
     intro:
-      "Jack leads shiels.ai engagements, pairing UCL research credentials with product leadership to launch multilingual LLM services that satisfy real-world compliance and performance demands.",
+      "Leads LLM projects end to end, using UCL research experience to ship multilingual services that meet compliance checks and latency goals.",
     highlights: [
       {
         icon: SparkIcon,
         title: "LLM Product Delivery",
-        description: "Owns discovery through launch for generative AI products serving infrastructure, fintech, and healthcare teams.",
+        description:
+          "Plans and ships LLM features from scoping through release for infrastructure, fintech, and healthcare teams.",
       },
       {
         icon: CircuitIcon,
         title: "Infrastructure Orchestration",
-        description: "Deploys secure hybrid-cloud pipelines covering ingestion, fine-tuning, evaluation, and monitoring.",
+        description:
+          "Builds secure hybrid-cloud pipelines for ingestion, fine-tuning, evaluation, and monitoring.",
       },
       {
         icon: CompassIcon,
         title: "Commercial Acceleration",
-        description: "Aligns go-to-market, client success, and technical strategy to grow early-stage AI offerings.",
+        description:
+          "Keeps product, engineering, and commercial plans in sync for small teams.",
       },
     ],
     experience: [
@@ -121,8 +124,8 @@ const founderProfiles = [
         period: "May 2024 — Present",
         achievements: [
           "Architects bespoke LLM and NLP solutions spanning retrieval pipelines, evaluation harnesses, and human-in-the-loop tooling.",
-          "Sets commercial strategy, client acquisition, and delivery operations for multi-sector AI programmes.",
-          "Runs data pipelines for fine-tuning and proprietary model training aligned to measurable client KPIs.",
+          "Sets commercial strategy for AI programmes to align with useful, valuable business cases.",
+          "Runs data pipelines for fine-tuning and proprietary model training.",
         ],
       },
       {
@@ -163,24 +166,27 @@ const founderProfiles = [
     role: "Founder & CTO",
     bio: "Software engineer; React, Docker, WebGL; SPAN/Derivco.",
     img: "./images/sam.jpeg",
-    headline: "Systems engineer crafting immersive cloud-native experiences for partners.",
+    headline: "Systems engineer shipping cloud-native interfaces.",
     intro:
-      "Sam blends creative coding with DevOps discipline, shipping React, WebGL, and containerised services that make complex data intuitive for enterprise and startup clients.",
+      "Builds React, WebGL, and containerised services with practical DevOps foundations so complex data stays clear for clients.",
     highlights: [
       {
         icon: SparkIcon,
         title: "Interactive Platforms",
-        description: "Designs responsive interfaces with React, WebGL, and real-time visualisation tailored to each engagement.",
+        description:
+          "Builds responsive interfaces with React, WebGL, and real-time visualisation.",
       },
       {
         icon: CircuitIcon,
         title: "Cloud & DevOps",
-        description: "Containers applications with Docker and modern CI/CD, wiring observability into every deployment.",
+        description:
+          "Packages applications with Docker and CI/CD, adding monitoring by default.",
       },
       {
         icon: CompassIcon,
         title: "Technical Leadership",
-        description: "Mentors squads from discovery to launch, aligning architecture with business strategy and user outcomes.",
+        description:
+          "Mentors squads from discovery to launch, aligning architecture with delivery goals.",
       },
     ],
     experience: [
@@ -223,24 +229,27 @@ const founderProfiles = [
     role: "Founder & CCO",
     bio: "Legal & compliance; operations across UK/Malaysia.",
     img: "./images/lude.jpeg",
-    headline: "Operations lead aligning cross-border compliance for AI ventures.",
+    headline: "Operations lead handling cross-border compliance.",
     intro:
-      "Lude leverages legal training and operational rigour to stand up compliant, cross-border operations so founders can scale AI programmes without regulatory surprises.",
+      "Uses legal training to set up compliant cross-border operations and keep filings on schedule.",
     highlights: [
       {
         icon: CompassIcon,
         title: "Regulatory Stewardship",
-        description: "Guides incorporation, licensing, and corporate governance for AI startups operating across Malaysia and beyond.",
+        description:
+          "Guides incorporation, licensing, and governance for AI startups in Malaysia and abroad.",
       },
       {
         icon: CircuitIcon,
         title: "Operational Enablement",
-        description: "Builds vendor networks, manages filings, and enforces repeatable processes across finance, legal, and admin workflows.",
+        description:
+          "Builds vendor networks, manages filings, and keeps finance, legal, and admin processes on track.",
       },
       {
         icon: SparkIcon,
         title: "Legal Insight",
-        description: "Translates legal research into practical risk management for founders and client engagements.",
+        description:
+          "Turns legal research into practical risk management for founders and client engagements.",
       },
     ],
     experience: [
@@ -275,7 +284,8 @@ const founderProfiles = [
         ],
       },
     ],
-    skills: "Regulatory Compliance • Operational Governance • Stakeholder Management",
+    skills:
+      "Regulatory Compliance • Operational Governance • Stakeholder Management",
     link: "https://www.linkedin.com/in/lude-t-4a15b127b/",
   },
 ];
@@ -326,7 +336,9 @@ const FounderExperiencePanel = ({ founder, open, onClose }) => {
       aria-hidden={!open}
     >
       <div
-        className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-out ${open ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ease-out ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
         onClick={onClose}
       />
       <div
@@ -340,20 +352,33 @@ const FounderExperiencePanel = ({ founder, open, onClose }) => {
           aria-labelledby={headingId}
           className="rounded-3xl border border-rose-200/60 dark:border-rose-900/50 bg-white/95 dark:bg-slate-950/95 shadow-2xl overflow-hidden max-h-[calc(100vh-6rem)] flex flex-col"
         >
-          <div className="absolute inset-x-0 h-36 bg-gradient-to-r from-rose-100 via-rose-50 to-transparent dark:from-rose-900/40 dark:via-rose-900/20 blur-3xl opacity-70" aria-hidden />
+          <div
+            className="absolute inset-x-0 h-36 bg-gradient-to-r from-rose-100 via-rose-50 to-transparent dark:from-rose-900/40 dark:via-rose-900/20 blur-3xl opacity-70"
+            aria-hidden
+          />
           <div className="relative flex-1 overflow-y-auto p-6 sm:p-8 md:p-10">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-              <div>
-                <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">Founder Experience</span>
-                <h3
-                  id={headingId}
-                  className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight"
-                >
-                  {founder.name}
-                </h3>
-                <p className="text-sm uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">
-                  {founder.role}
-                </p>
+              <div className="flex items-start gap-4">
+                <SmartImage
+                  src={founder.img}
+                  alt={`${founder.name} portrait`}
+                  label="Founder portrait"
+                  className="h-24 w-24 rounded-xl object-cover border border-rose-100/70 dark:border-rose-900/60 shadow-sm"
+                />
+                <div>
+                  <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">
+                    Founder Experience
+                  </span>
+                  <h3
+                    id={headingId}
+                    className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 dark:text-white leading-tight"
+                  >
+                    {founder.name}
+                  </h3>
+                  <p className="text-sm uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">
+                    {founder.role}
+                  </p>
+                </div>
               </div>
               <Button
                 variant="outline"
@@ -391,55 +416,52 @@ const FounderExperiencePanel = ({ founder, open, onClose }) => {
                         </p>
                       </div>
                     </div>
-                    <div className="absolute -bottom-10 -right-10 h-28 w-28 rounded-full bg-rose-200/40 dark:bg-rose-900/40 blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300" aria-hidden />
+                    <div
+                      className="absolute -bottom-10 -right-10 h-28 w-28 rounded-full bg-rose-200/40 dark:bg-rose-900/40 blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-300"
+                      aria-hidden
+                    />
                   </div>
                 );
               })}
             </div>
-            <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start">
-              <div className="space-y-6">
-                {founder.experience.map((exp, index) => (
-                  <div
-                    key={index}
-                    className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 backdrop-blur-sm p-5"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div>
-                        <p className="font-semibold text-slate-900 dark:text-white">
-                          {exp.title}
-                        </p>
-                        <p className="text-sm text-rose-600 dark:text-rose-300">{exp.organisation}</p>
-                      </div>
-                      <span className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-                        {exp.period}
-                      </span>
+            <div className="mt-10 space-y-6">
+              {founder.experience.map((exp, index) => (
+                <div
+                  key={index}
+                  className="rounded-2xl border border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 backdrop-blur-sm p-5"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="font-semibold text-slate-900 dark:text-white">
+                        {exp.title}
+                      </p>
+                      <p className="text-sm text-rose-600 dark:text-rose-300">
+                        {exp.organisation}
+                      </p>
                     </div>
-                    <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                      {exp.achievements.map((item, idx) => (
-                        <li key={idx} className="flex gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-500" aria-hidden />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <span className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
+                      {exp.period}
+                    </span>
                   </div>
-                ))}
-              </div>
-              <div className="relative order-first lg:order-none">
-                <div className="relative overflow-hidden rounded-3xl border border-rose-100/70 dark:border-rose-900/60 bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-rose-950 dark:via-slate-900 dark:to-rose-950/70 p-4 shadow-lg">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-rose-200/30 dark:from-rose-900/20 dark:via-transparent dark:to-rose-950/40" aria-hidden />
-                  <SmartImage
-                    src={founder.img}
-                    alt={`${founder.name} portrait`}
-                    label="Founder portrait"
-                    className="relative w-full rounded-2xl object-cover aspect-[4/5]"
-                  />
+                  <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                    {exp.achievements.map((item, idx) => (
+                      <li key={idx} className="flex gap-2">
+                        <span
+                          className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-500"
+                          aria-hidden
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
+              ))}
             </div>
             <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-rose-100/70 dark:border-rose-900/50 pt-4">
               <div>
-                <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">Focus Areas</span>
+                <span className="text-xs uppercase tracking-[0.3em] text-rose-500 dark:text-rose-300">
+                  Focus Areas
+                </span>
                 <p className="mt-1 text-sm text-slate-700 dark:text-slate-200 font-medium">
                   {founder.skills}
                 </p>
@@ -451,7 +473,9 @@ const FounderExperiencePanel = ({ founder, open, onClose }) => {
                 className="inline-flex items-center gap-2 rounded-full bg-rose-600 text-white px-5 py-2 text-sm font-semibold shadow-lg shadow-rose-600/30 hover:bg-rose-700 transition-colors"
               >
                 View on LinkedIn
-                <span aria-hidden className="text-base">↗</span>
+                <span aria-hidden className="text-base">
+                  ↗
+                </span>
               </a>
             </div>
           </div>
@@ -468,14 +492,20 @@ const ProfileCard = ({ name, role, bio, img, onViewExperience }) => (
         src={img}
         alt={`${name} profile`}
         label="Profile"
-        className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover mx-auto border border-slate-200 dark:border-slate-600"
+        className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover mx-auto border border-slate-200 dark:border-slate-600"
       />
     ) : (
       <CirclePlaceholder />
     )}
-    <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">{name}</h3>
-    <p className="text-xs uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">{role}</p>
-    <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{bio}</p>
+    <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">
+      {name}
+    </h3>
+    <p className="text-xs uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">
+      {role}
+    </p>
+    <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+      {bio}
+    </p>
     <Button
       variant="outline"
       className="mt-4 text-xs uppercase tracking-wide border-rose-200 text-rose-700 hover:text-rose-900 hover:border-rose-300 dark:text-rose-200 dark:border-rose-800 dark:hover:text-rose-100"
@@ -512,7 +542,8 @@ const TopNav = () => {
               onClick={(e) => {
                 e.preventDefault();
                 const el = document.getElementById(s.id);
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (el)
+                  el.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
               className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium"
             >
@@ -554,10 +585,16 @@ const Hero = () => (
         We develop cutting-edge AI and LLM solutions for your business
       </h1>
       <p className="mt-6 text-lg sm:text-xl text-slate-700 dark:text-white max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-        shiels.ai brings top academic and commercial experience to empower your SME or startup with game-changing AI technologies.
+        shiels.ai brings top academic and commercial experience to empower your
+        SME or startup with game-changing AI technologies.
       </p>
       <div className="mt-8 flex flex-wrap justify-center gap-2 text-xs animate-fade-in-up delay-600">
-        {["LLMs & NLP", "Full-Stack Engineering", "Explainable AI", "Cloud & On-Prem"].map((c, i) => (
+        {[
+          "LLMs & NLP",
+          "Full-Stack Engineering",
+          "Explainable AI",
+          "Cloud & On-Prem",
+        ].map((c, i) => (
           <span
             key={i}
             className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/80 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors"
@@ -586,13 +623,23 @@ const About = () => (
           About Us
         </h2>
         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">
-          shiels.ai (Shiels AI SDN BHD) is an AI research and development firm founded by Jack Shiels. Spun off from advanced AI research at University College London (UCL), we bring expertise in Natural Language Processing (NLP), Large Language Models (LLMs), and full-stack software development to deliver cutting-edge solutions across South Africa and South-East Asia.
+          shiels.ai (Shiels AI SDN BHD) is an AI research and development firm
+          founded by Jack Shiels. Spun off from advanced AI research at
+          University College London (UCL), we bring expertise in Natural
+          Language Processing (NLP), Large Language Models (LLMs), and
+          full-stack software development to deliver cutting-edge solutions
+          across South Africa and South-East Asia.
         </p>
         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">
-          We focus on novel AI applications, including explainable AI, data extraction, and generative AI, alongside robust full-stack applications built with multilayer architectures and comprehensive testing.
+          We focus on novel AI applications, including explainable AI, data
+          extraction, and generative AI, alongside robust full-stack
+          applications built with multilayer architectures and comprehensive
+          testing.
         </p>
         <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-left">
-          We are committed to becoming your trusted partner, delivering both innovative research and production-ready systems with timely, compliant project management.
+          We are committed to becoming your trusted partner, delivering both
+          innovative research and production-ready systems with timely,
+          compliant project management.
         </p>
       </div>
       <div className="animate-fade-in-up delay-200 h-full">
@@ -613,10 +660,10 @@ const About = () => (
 const Services = () => {
   const services = [
     {
-      title: "Custom LLM & NLP",
-      summary: "Tailored language systems grounded in your proprietary data.",
+      title: "Custom RAG Systems",
+      summary: "Tailored RAG systems grounded in your proprietary data.",
       detail:
-        "We design bespoke language systems that blend frontier models with proprietary data, building trustworthy retrieval and evaluation layers so answers stay accurate in your context. From ingestion pipelines to guardrails, every component is tuned for production workloads across compliance-heavy sectors.",
+        "We design bespoke RAG systems that blend frontier models with your valuable data, building trustworthy retrieval and evaluation layers so answers stay accurate in your context. Build your competitive AI advantage with a RAG that empowers teams with accurate, useful, and fast knowledge retrieval.",
       image: {
         src: "./images/flewnt.png",
         alt: "Diagram showcasing an LLM data pipeline",
@@ -646,9 +693,10 @@ const Services = () => {
     },
     {
       title: "Full-Stack Dev",
-      summary: "Enterprise-grade engineering that ships resilient APIs and crafted interfaces fast.",
+      summary:
+        "Enterprise-grade engineering that ships resilient APIs and crafted products, fast.",
       detail:
-        "Rapid product delivery backed by enterprise-grade engineering practices: resilient APIs, delightful interfaces, and deployment blueprints that span cloud and on-prem. We ship complete experiences, from analytics dashboards to tightly integrated mobile flows, with observability woven in from day one.",
+        "Rapid product delivery backed by enterprise-grade engineering practices: resilient APIs and deployments that span cloud and on-prem. We ship complete products that focus on usefulness first.",
       image: {
         src: "./images/trust2_architecture.png",
         alt: "Medical application UI screenshot",
@@ -678,9 +726,10 @@ const Services = () => {
     },
     {
       title: "Trustworthy AI",
-      summary: "Explainable, observable AI workflows tuned for regulated environments.",
+      summary:
+        "Explainable, observable AI workflows tuned for regulated environments.",
       detail:
-        "Decision pipelines stay explainable through layered monitoring, transparent scoring, and review tooling tailored to your regulators. We embed human-in-the-loop controls, bias detection, and narrative reporting so data teams, auditors, and operators can see how every model arrives at an outcome.",
+        "Decision pipelines stay explainable through monitoring, scoring, and review tooling tailored to your industry. We add human-in-the-loop controls, bias detection, and narrative reporting so data teams, auditors, and operators can see how every model arrives at an outcome.",
       image: {
         src: "./images/trust2.jpeg",
         alt: "Explainable AI dashboard",
@@ -710,7 +759,8 @@ const Services = () => {
     },
     {
       title: "Strategy & Enablement",
-      summary: "Founder-led discovery aligning business drivers with pragmatic AI roadmaps.",
+      summary:
+        "Founder-led discovery aligning business drivers with pragmatic AI roadmaps.",
       detail:
         "Work with founders and researchers who map business goals to pragmatic AI roadmaps, de-risk pilots, and upskill your teams. We facilitate collaborative discovery, quantify ROI, and hand over playbooks that let product, engineering, and leadership scale responsibly.",
       image: {
@@ -737,11 +787,7 @@ const Services = () => {
             strokeLinejoin="round"
             d="M7 19.5l1.5-4.5H6a1.5 1.5 0 01-1.341-2.188l3.06-6.12A1.5 1.5 0 018.09 6h7.82a1.5 1.5 0 011.372.916l3.06 6.12A1.5 1.5 0 0119 15h-2.5l1.5 4.5"
           />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 19.5h6"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 19.5h6" />
         </svg>
       ),
     },
@@ -783,7 +829,8 @@ const Services = () => {
                 AI services engineered for momentum
               </h2>
               <p className="text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed">
-                We blend research, engineering, and delivery to help teams ship AI products that delight users and withstand real-world scale.
+                We blend research and engineering to deliver AI that produces
+                real value.
               </p>
             </div>
           </div>
@@ -825,9 +872,11 @@ const Services = () => {
                       {service.title}
                     </h3>
                   </div>
-                  <span className={`text-[0.65rem] font-semibold uppercase tracking-wide ${
-                    activeIndex === index ? "text-rose-200" : "text-slate-300"
-                  }`}>
+                  <span
+                    className={`text-[0.65rem] font-semibold uppercase tracking-wide ${
+                      activeIndex === index ? "text-rose-200" : "text-slate-300"
+                    }`}
+                  >
                     {activeIndex === index ? "Selected" : "View"}
                   </span>
                 </div>
@@ -921,7 +970,9 @@ const KeyProjects = () => {
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + projects.length) % projects.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
+    );
   };
 
   return (
@@ -960,9 +1011,13 @@ const KeyProjects = () => {
                   <h3 className="text-base font-semibold text-rose-900 dark:text-rose-100">
                     {project.name}
                   </h3>
-                  <span className={`text-[0.65rem] font-semibold uppercase tracking-[0.25em] ${
-                    currentIndex === index ? "text-rose-500" : "text-rose-400/60"
-                  }`}>
+                  <span
+                    className={`text-[0.65rem] font-semibold uppercase tracking-[0.25em] ${
+                      currentIndex === index
+                        ? "text-rose-500"
+                        : "text-rose-400/60"
+                    }`}
+                  >
                     {currentIndex === index ? "Active" : "View"}
                   </span>
                 </div>
@@ -1031,7 +1086,8 @@ const KeyProjects = () => {
               Want a closer look at what we're building?
             </h3>
             <p className="mt-3 text-sm text-rose-800/80 dark:text-rose-100/80 leading-relaxed max-w-3xl mx-auto">
-              We document experiments, shipping rituals, and delivery lessons on our blog so partners can follow how we turn research into production wins.
+              We document research, experiments, and delivery lessons on our
+              blog so partners can follow how we develop AI.
             </p>
             <div className="mt-6 flex justify-center">
               <a
@@ -1135,14 +1191,18 @@ const EngagementModels = () => (
       </h2>
       <div className="mt-6 grid md:grid-cols-2 gap-6">
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Deliverable-Based Projects</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+            Deliverable-Based Projects
+          </h3>
           <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc pl-5">
             <li>Fixed pricing tied to milestones and outcomes.</li>
             <li>Cost predictability with flexible scope.</li>
           </ul>
         </div>
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6">
-          <h3 className="font-semibold text-slate-900 dark:text-slate-100">Hourly Consulting</h3>
+          <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+            Hourly Consulting
+          </h3>
           <ul className="mt-2 text-sm text-slate-700 dark:text-slate-300 list-disc pl-5">
             <li>Flexible engagement for research or advisory.</li>
             <li>Competitive hourly rates for different expertise levels</li>
@@ -1150,10 +1210,12 @@ const EngagementModels = () => (
         </div>
       </div>
       <div>
-      <p className="mt-6 text-slate-700 dark:text-slate-300 text-center">
-        Need a custom package? Chat with us to design the ideal engagement model and competitive rates tailored to your project requirements and timeline.
-      </p>
-    </div>
+        <p className="mt-6 text-slate-700 dark:text-slate-300 text-center">
+          Need a custom package? Chat with us to design the ideal engagement
+          model and competitive rates tailored to your project requirements and
+          timeline.
+        </p>
+      </div>
     </div>
   </Section>
 );
@@ -1174,8 +1236,13 @@ const WhyWorkWithUs = () => (
       <ul className="mt-6 grid md:grid-cols-2 gap-3 text-slate-700 dark:text-slate-300 list-disc pl-5 text-left">
         <li>Specialist expertise in AI research and engineering.</li>
         <li>Agile founder-led team with direct senior access.</li>
-        <li>Proven track record across academia, healthcare, fintech, and infrastructure.</li>
-        <li>Global footprint across the UK, South Africa, and South-East Asia.</li>
+        <li>
+          Proven track record across academia, healthcare, fintech, and
+          infrastructure.
+        </li>
+        <li>
+          Global footprint across the UK, South Africa, and South-East Asia.
+        </li>
       </ul>
       <div className="mt-8 animate-fade-in-up delay-200">
         <div className="relative overflow-hidden rounded-2xl">
@@ -1205,11 +1272,15 @@ const NextSteps = () => (
         Take the Next Step
       </h2>
       <p className="mt-4 text-slate-700 dark:text-slate-300 animate-fade-in-up delay-200 leading-relaxed max-w-2xl mx-auto">
-        Partner with shiels.ai to unlock the potential of AI for your business. Contact us to explore how our expertise can drive your success.
+        Partner with shiels.ai to unlock the potential of AI for your business.
+        Contact us to explore how our expertise can drive your success.
       </p>
       <p className="mt-3 text-slate-700 dark:text-slate-300 animate-fade-in-up delay-400">
         Reach out at{" "}
-        <a className="underline decoration-rose-500" href="mailto:lude@shiels.ai">
+        <a
+          className="underline decoration-rose-500"
+          href="mailto:lude@shiels.ai"
+        >
           lude@shiels.ai
         </a>{" "}
         to discuss collaboration opportunities.

@@ -1,18 +1,621 @@
 import React from "react";
-import { Button } from "../../components/ui/button";
+import ContactModal from "../../components/ContactModal";
 import useFixedOffset from "../../hooks/useFixedOffset";
 
-const Section = ({ children, className = "", id = undefined, style = {} }) => (
-  <section id={id} className={`py-16 sm:py-24 ${className} transition-all duration-500 ease-in-out`} style={style}>
+interface SectionProps {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+  style?: React.CSSProperties;
+}
+
+const Section: React.FC<SectionProps> = ({
+  children,
+  className = "",
+  id,
+  style = {},
+}) => (
+  <section
+    id={id}
+    className={`relative overflow-hidden py-16 sm:py-24 ${className}`}
+    style={style}
+  >
     {children}
   </section>
 );
 
+type ConnectorLineConfig = {
+  orientation: "horizontal" | "vertical";
+  top: string;
+  left: string;
+  length: string;
+  delay: number;
+  hue?: "primary" | "secondary";
+  thickness?: string;
+};
+
+type ConnectorNodeConfig = {
+  top: string;
+  left: string;
+  size?: string;
+  hue?: "primary" | "secondary";
+};
+
+type ConnectorPattern = {
+  lines: ConnectorLineConfig[];
+  nodes: ConnectorNodeConfig[];
+};
+
+const CONNECTOR_PATTERNS: Record<string, ConnectorPattern> = {
+  problem: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "18%",
+        left: "6%",
+        length: "60%",
+        delay: 0,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "32%",
+        left: "22%",
+        length: "48%",
+        delay: 350,
+        hue: "secondary",
+        thickness: "3px",
+      },
+      {
+        orientation: "horizontal",
+        top: "58%",
+        left: "12%",
+        length: "54%",
+        delay: 900,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "18%",
+        left: "66%",
+        length: "44%",
+        delay: 600,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "32%",
+        left: "28%",
+        length: "42%",
+        delay: 1200,
+        hue: "primary",
+      },
+    ],
+    nodes: [
+      { top: "18%", left: "6%" },
+      { top: "18%", left: "66%" },
+      { top: "58%", left: "12%" },
+      { top: "32%", left: "22%", size: "12px" },
+      { top: "76%", left: "28%", size: "14px", hue: "secondary" },
+      { top: "50%", left: "66%", size: "10px" },
+    ],
+  },
+  overview: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "20%",
+        left: "8%",
+        length: "58%",
+        delay: 0,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "46%",
+        left: "18%",
+        length: "52%",
+        delay: 500,
+        hue: "secondary",
+      },
+      {
+        orientation: "horizontal",
+        top: "68%",
+        left: "30%",
+        length: "40%",
+        delay: 1100,
+        hue: "primary",
+        thickness: "3px",
+      },
+      {
+        orientation: "vertical",
+        top: "20%",
+        left: "30%",
+        length: "46%",
+        delay: 800,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "28%",
+        left: "70%",
+        length: "48%",
+        delay: 1400,
+        hue: "primary",
+      },
+    ],
+    nodes: [
+      { top: "20%", left: "8%" },
+      { top: "20%", left: "70%" },
+      { top: "46%", left: "18%", size: "12px" },
+      { top: "68%", left: "30%", size: "14px", hue: "secondary" },
+      { top: "74%", left: "70%" },
+      { top: "34%", left: "30%", size: "10px" },
+      { top: "54%", left: "70%", size: "12px", hue: "secondary" },
+    ],
+  },
+  requirements: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "16%",
+        left: "12%",
+        length: "62%",
+        delay: 0,
+        hue: "primary",
+        thickness: "3px",
+      },
+      {
+        orientation: "horizontal",
+        top: "34%",
+        left: "24%",
+        length: "52%",
+        delay: 400,
+        hue: "secondary",
+      },
+      {
+        orientation: "horizontal",
+        top: "56%",
+        left: "18%",
+        length: "48%",
+        delay: 900,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "78%",
+        left: "8%",
+        length: "58%",
+        delay: 1300,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "16%",
+        left: "32%",
+        length: "54%",
+        delay: 700,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "34%",
+        left: "70%",
+        length: "52%",
+        delay: 1500,
+        hue: "secondary",
+      },
+    ],
+    nodes: [
+      { top: "16%", left: "12%" },
+      { top: "16%", left: "74%", size: "12px", hue: "secondary" },
+      { top: "34%", left: "24%", size: "10px" },
+      { top: "56%", left: "18%", size: "12px" },
+      { top: "78%", left: "8%", size: "14px", hue: "secondary" },
+      { top: "78%", left: "66%", size: "12px" },
+      { top: "52%", left: "32%", size: "10px", hue: "secondary" },
+      { top: "40%", left: "70%", size: "12px" },
+    ],
+  },
+  agents: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "18%",
+        left: "10%",
+        length: "60%",
+        delay: 0,
+        hue: "primary",
+        thickness: "3px",
+      },
+      {
+        orientation: "horizontal",
+        top: "36%",
+        left: "22%",
+        length: "50%",
+        delay: 380,
+        hue: "secondary",
+      },
+      {
+        orientation: "horizontal",
+        top: "60%",
+        left: "18%",
+        length: "56%",
+        delay: 820,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "78%",
+        left: "32%",
+        length: "40%",
+        delay: 1180,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "18%",
+        left: "68%",
+        length: "52%",
+        delay: 620,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "26%",
+        left: "30%",
+        length: "56%",
+        delay: 1450,
+        hue: "secondary",
+      },
+    ],
+    nodes: [
+      { top: "18%", left: "10%", size: "14px" },
+      { top: "18%", left: "70%", size: "16px", hue: "secondary" },
+      { top: "36%", left: "22%", size: "12px" },
+      { top: "60%", left: "18%", size: "14px", hue: "secondary" },
+      { top: "78%", left: "32%", size: "16px" },
+      { top: "64%", left: "70%", size: "12px", hue: "secondary" },
+      { top: "46%", left: "44%", size: "12px" },
+    ],
+  },
+  ai: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "18%",
+        left: "14%",
+        length: "60%",
+        delay: 0,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "30%",
+        left: "28%",
+        length: "50%",
+        delay: 350,
+        hue: "secondary",
+      },
+      {
+        orientation: "horizontal",
+        top: "48%",
+        left: "20%",
+        length: "58%",
+        delay: 700,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "68%",
+        left: "36%",
+        length: "42%",
+        delay: 1100,
+        hue: "secondary",
+        thickness: "3px",
+      },
+      {
+        orientation: "vertical",
+        top: "18%",
+        left: "62%",
+        length: "54%",
+        delay: 900,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "24%",
+        left: "30%",
+        length: "56%",
+        delay: 1400,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "30%",
+        left: "48%",
+        length: "52%",
+        delay: 1700,
+        hue: "primary",
+      },
+    ],
+    nodes: [
+      { top: "18%", left: "14%" },
+      { top: "18%", left: "74%", size: "12px" },
+      { top: "30%", left: "28%", size: "10px", hue: "secondary" },
+      { top: "48%", left: "20%", size: "12px" },
+      { top: "68%", left: "36%", size: "14px", hue: "secondary" },
+      { top: "68%", left: "62%", size: "12px" },
+      { top: "42%", left: "48%", size: "11px", hue: "secondary" },
+      { top: "58%", left: "74%", size: "10px" },
+    ],
+  },
+  contact: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "24%",
+        left: "12%",
+        length: "64%",
+        delay: 0,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "40%",
+        left: "18%",
+        length: "56%",
+        delay: 400,
+        hue: "secondary",
+        thickness: "3px",
+      },
+      {
+        orientation: "horizontal",
+        top: "60%",
+        left: "30%",
+        length: "46%",
+        delay: 900,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "24%",
+        left: "24%",
+        length: "50%",
+        delay: 650,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "28%",
+        left: "70%",
+        length: "48%",
+        delay: 1200,
+        hue: "primary",
+      },
+    ],
+    nodes: [
+      { top: "24%", left: "12%" },
+      { top: "24%", left: "76%", size: "12px" },
+      { top: "40%", left: "18%", size: "14px", hue: "secondary" },
+      { top: "60%", left: "30%", size: "12px" },
+      { top: "70%", left: "76%", size: "10px" },
+      { top: "52%", left: "24%", size: "10px", hue: "secondary" },
+    ],
+  },
+  team: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "16%",
+        left: "10%",
+        length: "60%",
+        delay: 0,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "34%",
+        left: "24%",
+        length: "52%",
+        delay: 350,
+        hue: "secondary",
+      },
+      {
+        orientation: "horizontal",
+        top: "52%",
+        left: "18%",
+        length: "50%",
+        delay: 800,
+        hue: "primary",
+      },
+      {
+        orientation: "horizontal",
+        top: "72%",
+        left: "32%",
+        length: "44%",
+        delay: 1200,
+        hue: "secondary",
+        thickness: "3px",
+      },
+      {
+        orientation: "vertical",
+        top: "16%",
+        left: "60%",
+        length: "54%",
+        delay: 600,
+        hue: "primary",
+      },
+      {
+        orientation: "vertical",
+        top: "24%",
+        left: "28%",
+        length: "52%",
+        delay: 1400,
+        hue: "secondary",
+      },
+    ],
+    nodes: [
+      { top: "16%", left: "10%" },
+      { top: "16%", left: "70%", size: "12px", hue: "secondary" },
+      { top: "34%", left: "24%", size: "10px" },
+      { top: "52%", left: "18%", size: "12px" },
+      { top: "72%", left: "32%", size: "14px", hue: "secondary" },
+      { top: "70%", left: "70%", size: "12px" },
+      { top: "46%", left: "60%", size: "10px", hue: "secondary" },
+    ],
+  },
+  default: {
+    lines: [
+      {
+        orientation: "horizontal",
+        top: "20%",
+        left: "12%",
+        length: "56%",
+        delay: 0,
+      },
+      {
+        orientation: "horizontal",
+        top: "40%",
+        left: "24%",
+        length: "48%",
+        delay: 500,
+        hue: "secondary",
+      },
+      {
+        orientation: "vertical",
+        top: "20%",
+        left: "64%",
+        length: "46%",
+        delay: 900,
+      },
+    ],
+    nodes: [
+      { top: "20%", left: "12%" },
+      { top: "20%", left: "64%" },
+      { top: "40%", left: "24%", size: "12px" },
+      { top: "64%", left: "24%" },
+    ],
+  },
+};
+
+const AnimatedConnectors: React.FC<{
+  variant?: "light" | "dark";
+  className?: string;
+  pattern?: string;
+}> = ({ variant = "light", className = "", pattern = "default" }) => {
+  const palette =
+    variant === "dark"
+      ? {
+          primary: "rgba(244,114,182,0.35)",
+          secondary: "rgba(148,163,184,0.35)",
+          node: "rgba(255,255,255,0.4)",
+        }
+      : {
+          primary: "rgba(244,114,182,0.3)",
+          secondary: "rgba(148,163,184,0.35)",
+          node: "rgba(244,114,182,0.35)",
+        };
+
+  const config = CONNECTOR_PATTERNS[pattern] ?? CONNECTOR_PATTERNS.default;
+
+  return (
+    <div
+      className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`}
+      aria-hidden
+    >
+      {config.lines.map((line, index) => {
+        const hue = line.hue ?? (index % 2 === 0 ? "primary" : "secondary");
+        const style: React.CSSProperties = {
+          top: line.top,
+          left: line.left,
+          animationDelay: `${line.delay}ms`,
+        };
+
+        if (line.orientation === "horizontal") {
+          style.width = line.length;
+          style.height = line.thickness ?? "2px";
+          style.backgroundImage = `linear-gradient(90deg, transparent, ${palette[hue]}, transparent)`;
+        } else {
+          style.height = line.length;
+          style.width = line.thickness ?? "2px";
+          style.backgroundImage = `linear-gradient(180deg, transparent, ${palette[hue]}, transparent)`;
+        }
+
+        return (
+          <span
+            key={`line-${pattern}-${index}`}
+            className={`connector-line ${
+              line.orientation === "vertical" ? "connector-line-vertical" : ""
+            }`}
+            style={style}
+          />
+        );
+      })}
+      {config.nodes.map((node, index) => (
+        <span
+          key={`node-${pattern}-${index}`}
+          className="connector-node"
+          style={{
+            top: node.top,
+            left: node.left,
+            width: node.size ?? "10px",
+            height: node.size ?? "10px",
+            background:
+              node.hue === "secondary" ? palette.secondary : palette.node,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const ScrollReveal: React.FC<{
+  className?: string;
+  delay?: number;
+  children: React.ReactNode;
+}> = ({ className = "", delay = 0, children }) => {
+  const ref = React.useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out will-change-transform ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      } ${className}`}
+      style={{ transitionDelay: visible ? `${delay}ms` : undefined }}
+    >
+      {children}
+    </div>
+  );
+};
+
 const ImagePlaceholder = ({ label = "Image Placeholder" }) => (
-  <div className="relative overflow-hidden rounded-3xl shine-border tilt animate-zoom-in hover:shadow-2xl transition-shadow duration-300">
-    <div className="aspect-[16/9] w-full rounded-3xl placeholder-hero bg-gradient-to-br from-rose-100 to-rose-200 dark:from-rose-900 dark:to-rose-800 border border-rose-200 dark:border-rose-700">
+  <div className="relative overflow-hidden border border-rose-200/60 bg-rose-50/70 dark:border-rose-900/40 dark:bg-rose-950/50 shadow-[0_20px_60px_rgba(244,114,182,0.2)]">
+    <div className="aspect-[16/9] w-full bg-gradient-to-br from-rose-100 to-rose-200 dark:from-rose-900 dark:to-rose-800">
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-rose-400 dark:text-rose-500 text-sm sm:text-base tracking-wide font-medium">
+        <span className="text-rose-500 dark:text-rose-200 text-sm sm:text-base tracking-wide font-medium uppercase">
           {label}
         </span>
       </div>
@@ -20,7 +623,12 @@ const ImagePlaceholder = ({ label = "Image Placeholder" }) => (
   </div>
 );
 
-const SmartImage: React.FC<{ src: string; alt: string; label: string; className?: string }> = ({ src, alt, label, className }) => {
+const SmartImage: React.FC<{
+  src: string;
+  alt: string;
+  label: string;
+  className?: string;
+}> = ({ src, alt, label, className }) => {
   const [error, setError] = React.useState(false);
   if (error) return <ImagePlaceholder label={label} />;
   return (
@@ -34,27 +642,43 @@ const SmartImage: React.FC<{ src: string; alt: string; label: string; className?
   );
 };
 
-const CirclePlaceholder: React.FC<{ label?: string; className?: string }> = ({ label = "Photo", className = "" }) => (
-  <div className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center text-slate-500 dark:text-slate-300 text-sm font-medium ${className}`}>
+const CirclePlaceholder: React.FC<{ label?: string; className?: string }> = ({
+  label = "Photo",
+  className = "",
+}) => (
+  <div
+    className={`w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 flex items-center justify-center text-slate-500 dark:text-slate-300 text-sm font-medium ${className}`}
+  >
     {label}
   </div>
 );
 
-const ProfileCard: React.FC<{ name: string; role: string; bio: string; img?: string }> = ({ name, role, bio, img }) => (
+const ProfileCard: React.FC<{
+  name: string;
+  role: string;
+  bio: string;
+  img?: string;
+}> = ({ name, role, bio, img }) => (
   <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-center shadow-sm hover:shadow-md transition-shadow">
     {img ? (
       <SmartImage
         src={img}
         alt={`${name} profile`}
         label="Profile"
-        className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover mx-auto border border-slate-200 dark:border-slate-600"
+        className="w-20 h-20 sm:w-20 sm:h-20 rounded-full object-cover mx-auto border border-slate-200 dark:border-slate-600"
       />
     ) : (
       <CirclePlaceholder />
     )}
-    <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">{name}</h3>
-    <p className="text-xs uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">{role}</p>
-    <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{bio}</p>
+    <h3 className="mt-4 font-semibold text-slate-900 dark:text-slate-100">
+      {name}
+    </h3>
+    <p className="text-xs uppercase tracking-wide text-rose-600 dark:text-rose-300 font-semibold">
+      {role}
+    </p>
+    <p className="mt-2 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+      {bio}
+    </p>
   </div>
 );
 
@@ -63,6 +687,7 @@ const Hero = () => (
   <Section
     className="relative text-center bg-gradient-to-r from-rose-50 to-slate-50 dark:from-rose-950 dark:to-slate-900 overflow-hidden"
     style={{
+      backgroundColor: "#0f1729",
       backgroundImage:
         "url('./images/background.png'), linear-gradient(to bottom, rgba(15,23,42,0.32), rgba(15,23,42,0.12), rgba(255,255,255,0))",
       backgroundRepeat: "no-repeat",
@@ -72,140 +697,278 @@ const Hero = () => (
   >
     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,_var(--tw-gradient-stops))] from-rose-500 to-transparent animate-[pulse_10s_ease-in-out_infinite]"></div>
     <div className="container mx-auto px-4 container-wide relative z-10">
-      <p className="uppercase tracking-widest text-xs sm:text-sm text-rose-600 dark:text-rose-400 font-bold animate-fade-in">
-        Flewnt — Technical Overview
+      <p className="uppercase tracking-widest text-xl sm:text-xl text-rose-600 dark:text-rose-400 font-bold animate-fade-in">
+        Flewnt.ai
       </p>
-      <h1 className="mt-3 font-lato font-extrabold text-4xl sm:text-6xl leading-tight text-rose-900 dark:text-rose-100 heading-accent animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
-        Flewnt - Multipass Data Extraction Engine
+      <h1
+        className="mt-3 font-lato font-extrabold text-4xl sm:text-6xl leading-tight text-rose-900 dark:text-rose-100 heading-accent animate-slide-up"
+        style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)" }}
+      >
+        Use AI to Create Software Requirements in an Instant, <em>Flewntly</em>
       </h1>
       <ul className="mt-6 text-lg sm:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto animate-fade-in-up delay-200 leading-relaxed list-disc pl-5 text-center">
-        <li>A .NET 8 Web API for processing documents and live audio, extracting domain concepts and data, and generating structured outputs.</li>
+        <li>
+          Flewnt turns unstructured data into beautiful requirements
+          specifications and agentic coding instructions. Turn your data into
+          apps in minutes.
+        </li>
       </ul>
-      <div className="mt-8 flex flex-wrap justify-center gap-2 text-xs animate-fade-in-up delay-400">
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '0ms' }}>Dockerized</span>
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '200ms' }}>LLMs + Local NLP</span>
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '400ms' }}>Firestore</span>
-        <span className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors" style={{ animationDelay: '600ms' }}>Nginx + TLS</span>
+      <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs animate-fade-in-up delay-400">
+        <span
+          className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors"
+          style={{ animationDelay: "0ms" }}
+        >
+          UML
+        </span>
+        <span
+          className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors"
+          style={{ animationDelay: "200ms" }}
+        >
+          Specifications
+        </span>
+        <span
+          className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors"
+          style={{ animationDelay: "400ms" }}
+        >
+          Codegen
+        </span>
+        <span
+          className="chip float-y bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800 transition-colors"
+          style={{ animationDelay: "600ms" }}
+        >
+          Agentic Output
+        </span>
       </div>
       <div className="mt-12 animate-fade-in-up delay-600">
-        <div className="relative overflow-hidden rounded-2xl tilt hover:rotate-1 transition-transform duration-300">
-          <img
-            src="./images/flewnt.png"
-            alt="Flewnt architecture overview"
-            className="w-full max-w-[100vw] h-auto rounded-2xl shadow-xl transform hover:scale-105 transition-transform duration-300"
-          />
-        </div>
+        <img
+          src="./images/flewnt.png"
+          alt="Flewnt architecture overview"
+          className="w-full max-w-[100vw] h-auto"
+        />
       </div>
+    </div>
+  </Section>
+);
+
+// PROBLEM
+const Problem = () => (
+  <Section
+    id="problem"
+    className="bg-gradient-to-br border-b border-slate-500 from-rose-100 via-white to-rose-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900"
+  >
+    <AnimatedConnectors className="hidden md:block" pattern="problem" />
+    <div className="container mx-auto px-5 sm:px-8 max-w-6xl relative">
+      <ScrollReveal className="relative space-y-5 rounded-3xl border border-rose-200/70 bg-white/85 px-6 sm:px-10 py-10 shadow-[0_22px_60px_rgba(244,114,182,0.18)] backdrop-blur-md dark:border-rose-900/50 dark:bg-rose-950/70">
+        <h2 className="flex items-center gap-3 text-3xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 drop-shadow-[0_6px_18px_rgba(244,114,182,0.28)]">
+          <span aria-hidden className="mr-2">
+            ⚠️
+          </span>
+          <span>The problem with vibe coding</span>
+        </h2>
+        <p className="text-sm sm:text-base text-slate-700 dark:text-rose-100/85 leading-relaxed">
+          Modern software teams can’t rely on guesswork. Shipping
+          enterprise-grade features demands shared requirements, engaged
+          clients, and a discovery process that captures every nuance. "Prompt
+          it and hope" delivers spectacle—not systems.
+        </p>
+        <ul className="space-y-3 text-sm text-slate-700 dark:text-rose-100/80 leading-relaxed">
+          {[
+            "Vibe coding skips validated requirements, so delivery drifts from what stakeholders actually need.",
+            "Without structured client engagement, engineering wastes sprints clarifying scope that should have been settled during discovery.",
+            "Manual note taking leaves discovery slow, error-prone, and disconnected from the teams tasked with building the outcome.",
+          ].map((item) => (
+            <li key={item} className="flex items-start gap-3">
+              <span aria-hidden className="mt-0.5 mr-2">
+                🚫
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </ScrollReveal>
     </div>
   </Section>
 );
 
 // OVERVIEW
 const Overview = () => (
-  <Section id="overview" className="bg-gradient-to-b from-white to-rose-50 dark:from-slate-900 dark:to-rose-950 relative">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start relative z-10">
-      <div className="space-y-6 animate-slide-left order-last lg:order-first">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Overview</h2>
-        <ul className="text-slate-700 dark:text-slate-300 leading-relaxed list-disc pl-5 text-left">
-          <li>The backend is implemented using .NET 8 Web API, supporting WebSockets and Firestore for data persistence.</li>
-          <li>NLP processing is handled by a Python/Flask engine utilizing spaCy and fastcoref for data extraction.</li>
-          <li>LLMs including Gemini and Groq are integrated for data enrichment and transcription. The system runs in Docker containers, proxied by Nginx with Let's Encrypt for TLS.</li>
-        </ul>
-      </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
+  <Section
+    id="overview"
+    className="bg-gradient-to-br border-b border-t border-slate-500 from-white via-rose-50 to-white dark:from-blue-950 dark:via-rose-950/35 dark:to-slate-900"
+  >
+    <AnimatedConnectors className="hidden md:block" pattern="overview" />
+    <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative">
+      <div className="relative grid gap-12 lg:grid-cols-2 items-center">
+        <ScrollReveal
+          delay={120}
+          className="relative order-last lg:order-first space-y-6"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-300/60 bg-rose-100/70 px-4 py-1 text-xs uppercase tracking-[0.25em] text-rose-600 shadow-[0_12px_28px_rgba(244,114,182,0.22)] dark:border-rose-700/60 dark:bg-rose-950/50 dark:text-rose-200">
+            <span aria-hidden className="mr-2">
+              ✨
+            </span>
+            Why Flewnt
+          </div>
+          <h2 className="flex items-start gap-3 text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 drop-shadow-[0_10px_26px_rgba(244,114,182,0.32)]">
+            <span aria-hidden className="mr-2">
+              📋
+            </span>
+            <span>Flewnt is your AI business analyst and project manager</span>
+          </h2>
+          <ul className="space-y-5 text-slate-700 dark:text-rose-100/85 leading-relaxed">
+            {[
+              "Flewnt turns raw discovery into structured requirement packs in seconds, cutting weeks of back-and-forth from your roadmap.",
+              "Upload documents, audio, and even live-transcribed video calls to create a single source of truth for your project.",
+              "Every requirement flows straight into build agents that produce code, documentation, and handover assets without breaking context.",
+              "The orchestration layer keeps stakeholders aligned so what ships mirrors the vision your clients actually signed off.",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span aria-hidden className="mt-1 mr-2">
+                  🌐
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </ScrollReveal>
+        <ScrollReveal className="relative order-first lg:order-none" delay={40}>
           <SmartImage
             src="./images/overview.png"
             alt="Overview visual"
             label="Overview Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
+            className="h-full w-full object-cover"
           />
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   </Section>
 );
 
-// REPO LAYOUT
-const RepoLayout = () => (
-  <Section id="repo" className="bg-slate-50 dark:bg-rose-900/20 relative overflow-hidden">
-    <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNIDAgMCBMIDYwIDYwTTEwIDYwIEwgMCA1ME0wIDYwIEwgNTAgME0wIDYwIEwgNjAgNjBNMCA2MCBMIDYwIDAiIHN0cm9rZT0iI2ZhZmZmZiIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSI2Ij48L3BhdGg+PC9zdmc+')]"></div>
-    <div className="container mx-auto px-4 max-w-6xl relative z-10">
-      <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Repository Layout</h2>
-      <ul className="mt-6 text-slate-700 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed list-disc pl-5 text-left">
-        <li>The repository is structured into components for the server, AI services, domain models, and deployment configurations.</li>
-      </ul>
-      <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[
-          { name: "Zhaopian.Server", desc: "ASP.NET Core Web API containing business logic, persistence, and WebSockets." },
-          { name: "Zhaopian.Server.Ai", desc: "AI service clients, prompts, serializers, and configuration contracts." },
-          { name: "Zhaopian.Server.Domain", desc: "Core domain models shared by the server." },
-          { name: "Zhaopian.Engine.Ai", desc: "Python Flask NLP engine for data extraction." },
-          { name: "Zhaopian.Jupyter", desc: "Jupyter notebooks for prototyping and evaluation." },
-          { name: "docker-compose.yml", desc: "Docker Compose for local setup of server and NLP engine." },
-          { name: "Zhaopian.Server/Hosting", desc: "Production Docker Compose, Nginx configuration, deployment script, and production environment." },
-        ].map((r, i) => (
-          <div
-            key={i}
-            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm p-5 float-y hover:translate-y-[-2px] transition-transform duration-300"
-            style={{ animationDelay: `${i * 120}ms` }}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-slate-900 dark:text-slate-100">{r.name}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full chip bg-rose-200 text-rose-800 dark:bg-rose-800/50 dark:text-rose-200">dir</span>
+// REQUIREMENTS
+const Requirements = () => (
+  <Section
+    id="requirements"
+    className="border-t border-slate-200/40 bg-gradient-to-br from-blue-950 via-slate-900 to-slate-950 text-slate-100"
+  >
+    <AnimatedConnectors
+      variant="dark"
+      className="hidden md:block"
+      pattern="requirements"
+    />
+    <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative">
+      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-start">
+        <ScrollReveal className="space-y-6 lg:order-last">
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-rose-500/10 px-4 py-1 text-xs uppercase tracking-[0.25em] text-rose-200">
+            <span aria-hidden className="mr-2">
+              🧩
+            </span>
+            Requirements engine
+          </div>
+          <h2 className="flex items-start gap-3 text-3xl sm:text-4xl font-extrabold heading-accent text-rose-100 drop-shadow-[0_10px_26px_rgba(244,114,182,0.32)]">
+            <span aria-hidden className="mr-2">
+              🚀
+            </span>
+            <span>Specifications that keep pace with your imagination</span>
+          </h2>
+          <ul className="space-y-5 text-sm sm:text-base text-rose-50/90 leading-relaxed">
+            {[
+              "Generate domain, class, and ERD diagrams, plus use case journeys and detailed requirements documents—straight from a single conversation.",
+              "Render thousands of nodes in sub-seconds with Flewnt’s GPU-friendly diagram engine, keeping workshops live and interactive.",
+              "Switch between themes, export formats, and stakeholder-ready storyboards without rebuilding the underlying requirements.",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span aria-hidden className="mt-1 mr-2">
+                  ⚙️
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="grid gap-4 sm:grid-cols-2 max-w-xl text-sm text-rose-100/85">
+            <div className="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 shadow-[0_18px_40px_rgba(244,114,182,0.22)] backdrop-blur">
+              <span className="block text-[0.65rem] uppercase tracking-[0.25em] text-rose-200/80">
+                Supports
+              </span>
+              <p className="mt-2 font-semibold leading-snug">
+                Domain, class, ERD, use case, and requirements detail documents
+              </p>
             </div>
-            <p className="mt-2 text-sm text-slate-800 dark:text-slate-300 leading-relaxed">{r.desc}</p>
+            <div className="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 shadow-[0_18px_40px_rgba(244,114,182,0.22)] backdrop-blur">
+              <span className="block text-[0.65rem] uppercase tracking-[0.25em] text-rose-200/80">
+                Performance
+              </span>
+              <p className="mt-2 font-semibold leading-snug">
+                10k+ entities rendered in under 300ms with live diagram updates
+              </p>
+            </div>
           </div>
-        ))}
+        </ScrollReveal>
+        <ScrollReveal
+          delay={140}
+          className="relative order-first lg:order-first"
+        >
+          <SmartImage
+            src="./images/flewnt_diagrams.png"
+            alt="Diagram rendering visual"
+            label="Requirements visual"
+            className="h-full w-full object-cover"
+          />
+        </ScrollReveal>
       </div>
     </div>
   </Section>
 );
 
-// INFRASTRUCTURE
-const Infrastructure = () => (
-  <Section id="infra" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-right order-first lg:order-last">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Infrastructure</h2>
-        <div className="mt-6 space-y-6">
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Containers</h3>
-            <ul className="mt-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>NLP Engine: Based on <code>python:3.9-slim</code>, includes spaCy and fastcoref, served with gunicorn on port 5001.</li>
-              <li>Server: Multi-stage build with .NET 8, runs on port 5002.</li>
-            </ul>
+// AGENT ORCHESTRATION
+const AgentOrchestration = () => (
+  <Section
+    id="agents"
+    className="border-t border-slate-200/40 bg-gradient-to-br from-rose-50 via-white to-rose-100 dark:from-slate-950 dark:via-rose-950/35 dark:to-slate-900"
+  >
+    <AnimatedConnectors className="hidden md:block" pattern="agents" />
+    <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative">
+      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] items-start">
+        <ScrollReveal className="space-y-6 order-last lg:order-first">
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-300/60 bg-rose-100/70 px-4 py-1 text-xs uppercase tracking-[0.25em] text-rose-600 shadow-[0_12px_28px_rgba(244,114,182,0.22)] dark:border-rose-700/60 dark:bg-rose-950/50 dark:text-rose-200">
+            <span aria-hidden className="mr-2">
+              🤖
+            </span>
+            Agent orchestration
           </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Local Development</h3>
-            <ul className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Docker Compose launches the NLP engine on 5001 and server on 5002, configured via .env file.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Production</h3>
-            <ul className="mt-2 text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Images pulled from GHCR. Nginx handles TLS on 443 and ACME on 80. Services connected via shared bridge network, proxying to server on 5002.</li>
-              <li>Environment variables from <code>/srv/flewnt/prod.env</code>. Updates managed by <code>pull_and_refresh.sh</code> for rolling deployments.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Nginx</h3>
-            <ul className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Configured with <code>server_name</code> for flewnt.ai, includes HSTS, security headers, ACME webroot, and proxy to backend server.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
+          <h2 className="flex items-start gap-3 text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 drop-shadow-[0_10px_26px_rgba(244,114,182,0.32)]">
+            <span aria-hidden className="mr-2">
+              🛠️
+            </span>
+            <span>
+              Turn specifications into accurate, intentional code in seconds
+            </span>
+          </h2>
+          <ul className="space-y-4 text-slate-700 dark:text-rose-100/85 leading-relaxed">
+            {[
+              "Flewnt orchestrates agents with structured, accurate instructions derived from specifications, just like a real teachnical analyst.",
+              "Export AGENTS.md or CLAUDE.md files that ensure adherence to software development best practices.",
+              "Initiate codegen from the Flewnt app, via the FlewntCLI.",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span aria-hidden className="mt-1 mr-2">
+                  🧭
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </ScrollReveal>
+        <ScrollReveal
+          delay={140}
+          className="relative order-first lg:order-none"
+        >
           <SmartImage
-            src="./images/infrastructure.png"
-            alt="Infrastructure visual"
-            label="Infrastructure Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
+            src="./images/flewnt.png"
+            alt="Agent orchestration visual"
+            label="Agent orchestration visual"
+            className="h-full w-full object-cover"
           />
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   </Section>
@@ -213,213 +976,146 @@ const Infrastructure = () => (
 
 // AI ARCHITECTURE
 const AiArchitecture = () => (
-  <Section id="ai" className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-left">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>AI Architecture</h2>
-        <div className="mt-6 space-y-6 text-slate-700 dark:text-slate-300">
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">NLP Engine APIs</h3>
-            <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Endpoints for structured text processing and data extraction, supporting downstream enrichment.</li>
-            </ul>
+  <Section
+    id="ai"
+    className="border-t border-slate-200/40 bg-gradient-to-br from-blue-950 via-slate-900 to-rose-950 text-rose-50"
+  >
+    <div
+      className="absolute inset-0 bg-gradient-to-br from-slate-950/80 via-rose-950/45 to-slate-900/65"
+      aria-hidden
+    />
+    <AnimatedConnectors
+      variant="dark"
+      className="hidden md:block"
+      pattern="ai"
+    />
+    <div className="container mx-auto px-5 sm:px-8 max-w-7xl relative">
+      <div className="relative grid gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-start">
+        <ScrollReveal delay={120} className="space-y-6 lg:order-last">
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-rose-500/10 px-4 py-1 text-xs uppercase tracking-[0.3em] text-rose-100">
+            <span aria-hidden className="mr-2">
+              🧠
+            </span>
+            AI engine
           </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Pipeline</h3>
-            <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Utilizes spaCy <code>en_core_web_trf</code> and <code>fastcoref</code> for text cleanup and speaker canonicalization. Applies layered rule-based and heuristic processing over sentence structures, with late filtering and de-duplication based on detected objects.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">LLM Integration</h3>
-            <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Gemini 2.5 Flash for data enrichment. Groq LLaMA 3.3 70B with Whisper Large V3 Turbo for transcription of text and audio.</li>
-              <li>Server-side orchestrators manage the flow for extraction, enrichment, and real-time transcription.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
+          <h2 className="flex items-start gap-3 text-3xl sm:text-4xl font-extrabold heading-accent text-rose-50 drop-shadow-[0_14px_32px_rgba(244,114,182,0.45)]">
+            <span aria-hidden className="mr-2">
+              🎙️
+            </span>
+            <span>Proprietary NLP that keeps pace with live interviews</span>
+          </h2>
+          <p className="text-sm sm:text-base text-rose-50/85 leading-relaxed">
+            Flewnt pairs a bespoke NLP stack with orchestration-grade LLMs so
+            every nuance of a stakeholder interview is captured, clarified, and
+            turned into build-ready requirements—all while the conversation is
+            still happening.
+          </p>
+          <ul className="space-y-4 text-sm leading-relaxed text-rose-50/85">
+            {[
+              {
+                title: "On-device transcription.",
+                body: "Secure, ultra-low-latency transcription runs on customer hardware, so teams capture every correction, acronym, and decision without shipping audio to the cloud.",
+                icon: "🔐",
+              },
+              {
+                title: "Dual-layer understanding.",
+                body: "Domain-tuned NLP parses vocabulary, roles, and intents while supervisory LLMs validate traceability, highlight contradictions, and suggest clarifying follow-ups.",
+                icon: "🧬",
+              },
+              {
+                title: "Live requirement diffs.",
+                body: "Each utterance updates the requirement pack in real time, letting interviewers confirm scope, log changes, and hand approved stories straight to build agents.",
+                icon: "⚡",
+              },
+            ].map((item) => (
+              <li key={item.title} className="flex items-start gap-3">
+                <span aria-hidden className="mt-1 mr-2">
+                  {item.icon}
+                </span>
+                <span>
+                  <strong className="font-semibold text-rose-100">
+                    {item.title}
+                  </strong>{" "}
+                  {item.body}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </ScrollReveal>
+        <ScrollReveal
+          delay={60}
+          className="relative order-first lg:order-first"
+        >
           <SmartImage
             src="./images/ai_architecture.png"
-            alt="AI architecture visual"
+            alt="Flewnt AI architecture"
             label="AI Architecture Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
+            className="h-full w-full object-cover"
           />
-        </div>
+        </ScrollReveal>
       </div>
     </div>
   </Section>
 );
 
-// RENDERING
-const Rendering = () => (
-  <Section id="rendering" className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-left">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Rendering</h2>
-        <div className="mt-6 space-y-6 text-slate-700 dark:text-slate-300">
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Powerful Rendering Engine</h3>
-            <ul className="mt-2 text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Hyper-fast, optimized rendering of components that can generate 1000's of entities in sub-second timings.</li>
-              <li>Robust pathfinding and visualization capabilities, driven by the Flewnt diagram engine.</li>
-              <li>Multiple specification sets, with support for custom themes.</li>
-              <li>Export to a variety of formats and data structures.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
-          <SmartImage
-            src="./images/flewnt_diagrams.png"
-            alt="AI architecture visual"
-            label="AI Architecture Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
-          />
-        </div>
-      </div>
-    </div>
-  </Section>
-);
+const ContactCTA = () => {
+  const [contactOpen, setContactOpen] = React.useState(false);
 
-// LABELING & TRAINING
-const LabelingTraining = () => (
-  <Section id="labeling" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-right order-last lg:order-first">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Labeling & Model Training</h2>
-        <div className="mt-6 space-y-6 text-slate-700 dark:text-slate-300">
+  return (
+    <Section
+      id="contact"
+      className="bg-gradient-to-br from-blue-800 via-purple-600 to-indigo-600 text-white border-t border-sky-400/60"
+    >
+      <AnimatedConnectors
+        variant="light"
+        pattern="contact"
+        className="hidden md:block opacity-50"
+      />
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-36 right-1/3 h-56 w-56 rounded-full bg-white/20 blur-[160px]" />
+        <div className="absolute bottom-[-8rem] left-[-6rem] h-48 w-48 rounded-full bg-white/15 blur-[140px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.2),transparent_55%),radial-gradient(circle_at_80%_30%,rgba(255,255,255,0.18),transparent_55%)] mix-blend-screen" />
+      </div>
+      <div className="container mx-auto px-4 max-w-5xl relative z-10 text-center">
+        <ScrollReveal>
           <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Data & Annotation</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Over 75k labeled samples using Label Studio, including structured labels with spans and indices.</li>
-            </ul>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-4 py-1 text-xs uppercase tracking-[0.3em]">
+              <span aria-hidden className="mr-2">
+                📬
+              </span>
+              Bring Flewnt In-House
+            </div>
+            <h2 className="mt-4 flex items-start justify-center gap-3 text-3xl sm:text-4xl font-extrabold heading-accent drop-shadow-[0_10px_25px_rgba(244,114,182,0.5)]">
+              <span aria-hidden className="mr-2">
+                🚀
+              </span>
+              <span>
+                See how Flewnt transforms your discovery and delivery motion
+              </span>
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-rose-50/85 leading-relaxed max-w-3xl mx-auto">
+              Invite us to your next stakeholder interview or requirements
+              workshop. We’ll run Flewnt live with your teams, capture the
+              nuance, and hand back a build-ready requirement pack in
+              minutes—not weeks.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setContactOpen(true)}
+                className="inline-flex items-center gap-2 rounded-full bg-white text-rose-600 font-semibold px-6 py-3 shadow-[0_18px_40px_rgba(244,114,182,0.35)] transition hover:-translate-y-0.5"
+              >
+                Contact us
+                <span aria-hidden>→</span>
+              </button>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Training Strategy</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Baseline uses rule-based extractor with fastcoref. Evaluating span-classification and seq2seq models with constrained decoding.</li>
-              <li>Evaluation metrics include exact/fuzzy match F1 on structured outputs, with error analysis for coreference and list handling.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Serving Plan</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Models serve as drop-in replacements behind Flask interface, with A/B testing via <code>AICONFIGURATION__NLP_ENGINE_API_URL</code>.</li>
-            </ul>
-          </div>
-        </div>
+        </ScrollReveal>
       </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
-          <SmartImage
-            src="./images/label_studio.png"
-            alt="Label Studio visual"
-            label="Labeling / Training Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
-          />
-        </div>
-      </div>
-    </div>
-  </Section>
-);
-
-// CONFIGURATION & OPERATIONS
-const ConfigOperations = () => (
-  <Section id="config-operations" className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl grid lg:grid-cols-2 gap-12 items-start">
-      <div className="animate-slide-right">
-        <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Configuration & Operations</h2>
-        <div className="mt-6 space-y-6 text-slate-700 dark:text-slate-300">
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Run Locally</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Using Docker Compose: Set .env and run <code>docker compose up --build</code>.</li>
-              <li>Manual: Start NLP engine with Flask/gunicorn, then <code>dotnet run</code> for server, ensuring correct API URL.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">Operational Notes</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>Security features include TLS via Nginx, HSTS, CSP, Firebase JWT verification, and WebSocket origin restrictions.</li>
-              <li>Observability through ASP.NET logging and structured stdout logs from NLP engine.</li>
-              <li>Performance managed with chunking and throttling via <code>NLP_ENGINE_CALL_INTERVAL</code> and <code>LLM_CALL_INTERVAL</code>.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-rose-900 dark:text-rose-100">CI/CD</h3>
-            <ul className="text-sm leading-relaxed list-disc pl-5 text-left">
-              <li>GitHub Actions automates building and testing for pushes/PRs to 'release' and 'main' branches.</li>
-              <li>Publishes Zhaopian.Server and Zhaopian.Engine.Ai images to GHCR with latest tags.</li>
-              <li>.NET tests run for Zhaopian.Server.Tests using .NET 8 SDK, with NuGet caching.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div className="animate-fade-in-up delay-200">
-        <div className="relative overflow-hidden rounded-2xl">
-          <SmartImage
-            src="./images/nginx.png"
-            alt="Nginx operations visual"
-            label="Operations Visual"
-            className="w-full h-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm"
-          />
-        </div>
-      </div>
-    </div>
-  </Section>
-);
-
-// APPENDIX
-const Appendix = () => (
-  <Section id="appendix" className="bg-slate-900 text-slate-100 border-t border-slate-800">
-    <div className="container mx-auto px-4 max-w-6xl">
-      <h2 className="text-3xl sm:text-4xl font-extrabold animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Appendix: Key Files & Paths</h2>
-      <div className="mt-8 grid md:grid-cols-2 gap-6">
-        {[
-          { k: "Compose (local)", v: "docker-compose.yml" },
-          { k: "Compose (prod)", v: "Zhaopian.Server/Hosting/docker-compose.prod.yml" },
-          { k: "Nginx config", v: "Zhaopian.Server/Hosting/nginx/nginx.conf" },
-          { k: "Server entry", v: "Zhaopian.Server/Program.cs" },
-          { k: "NLP engine", v: "Zhaopian.Engine.Ai/app.py" },
-          { k: "AI services", v: "Zhaopian.Server.Ai/AiService/*" },
-          { k: "Domain models", v: "Zhaopian.Server.Domain/Models/*" },
-        ].map((row, i) => (
-          <div key={i} className="rounded-2xl border border-slate-700 p-5 bg-slate-800 hover:bg-slate-700 transition-colors duration-300 float-y" style={{ animationDelay: `${i * 100}ms` }}>
-            <div className="text-xs uppercase tracking-wider text-slate-300">{row.k}</div>
-            <div className="mt-1 font-mono text-sm text-slate-100">{row.v}</div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </Section>
-);
-
-// FOOTER CTA
-const FooterCTA = () => (
-  <Section className="text-center bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
-    <div className="container mx-auto px-4 max-w-4xl">
-      <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 animate-slide-up" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>Explore the Flewnt Architecture</h2>
-      <p className="mt-4 text-slate-700 dark:text-slate-300 animate-fade-in-up delay-200 leading-relaxed max-w-2xl mx-auto">
-        Dive into the elegance of Flewnt's design. Replace placeholders with detailed architecture visuals and screenshots to showcase its innovative structure.
-      </p>
-      <div className="mt-8 flex justify-center gap-4 animate-fade-in-up delay-400">
-        <Button className="rounded-full bg-rose-600 hover:bg-rose-700 text-white shadow-md hover:shadow-xl transition-shadow px-8 py-3 text-lg font-semibold">
-          View Documentation
-        </Button>
-        <Button variant="outline" className="rounded-full border-rose-600 text-rose-600 hover:bg-rose-100 dark:border-rose-400 dark:text-rose-400 dark:hover:bg-rose-900/50 shadow-md hover:shadow-xl transition-shadow px-8 py-3 text-lg font-semibold">
-          Contact
-        </Button>
-      </div>
-      <div className="mt-12 text-sm text-slate-500 dark:text-slate-400">
-        <p>Designed with precision by the Flewnt Team © 2025</p>
-      </div>
-    </div>
-  </Section>
-);
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
+    </Section>
+  );
+};
 
 const TopNav = () => {
   const { ref: navRef, spacerHeight } = useFixedOffset();
@@ -435,13 +1131,11 @@ const TopNav = () => {
         <div className="container mx-auto px-4 max-w-6xl py-3 flex items-center gap-4 text-sm overflow-x-auto">
           {[
             { id: "overview", label: "Overview" },
-            { id: "team", label: "Team" },
-            { id: "repo", label: "Repository" },
-            { id: "infra", label: "Infrastructure" },
+            { id: "requirements", label: "Requirements" },
+            { id: "agents", label: "Agents" },
             { id: "ai", label: "AI" },
-            { id: "rendering", label: "Rendering" },
-            { id: "labeling", label: "Labeling" },
-            { id: "config-operations", label: "Config & Ops" },
+            { id: "contact", label: "Contact" },
+            { id: "team", label: "Team" },
           ].map((s) => (
             <a
               key={s.id}
@@ -449,7 +1143,8 @@ const TopNav = () => {
               onClick={(e) => {
                 e.preventDefault();
                 const el = document.getElementById(s.id);
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (el)
+                  el.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
               className="text-rose-600 hover:text-rose-900 dark:text-rose-300 dark:hover:text-rose-100 whitespace-nowrap transition-colors duration-200 font-medium"
             >
@@ -466,67 +1161,70 @@ const TopNav = () => {
 const Team = () => (
   <Section
     id="team"
-    className="bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 relative overflow-hidden"
+    className="border-t border-slate-200/80 text-slate-900 dark:text-rose-100 bg-black/50"
     style={{
-      backgroundImage:
-        "linear-gradient(to bottom, rgba(2,6,23,0.55), rgba(2,6,23,0.35), rgba(2,6,23,0.55)), url('./images/team_background.jpg')",
-      backgroundRepeat: "no-repeat",
+      backgroundImage: "url('./images/code_background.jpg')",
       backgroundSize: "cover",
       backgroundPosition: "center",
     }}
   >
-    <div className="container mx-auto px-4 max-w-6xl">
-      <h2 className="text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100">Team</h2>
-      <p className="mt-4 text-white/90 dark:text-slate-200 max-w-3xl">
-        People building Flewnt.
-      </p>
-      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          {
-            name: "Jack Shiels",
-            role: "AI Technologist & Founder",
-            bio: "Founder at shiels.ai. Builds end‑to‑end LLM/NLP systems; UCL research on time‑series LLMs; ex Trayport & Accenture.",
-            img: "./images/jack.jpeg",
-          },
-          {
-            name: "Lude Tang",
-            role: "Legal & Founder",
-            bio: "UK‑trained legal/admin background; led operations across Malaysian SMEs and construction projects.",
-            img: "./images/lude.jpeg",
-          },
-          {
-            name: "Sam Shiels",
-            role: "Software Engineer & Founder",
-            bio: "Full‑stack engineer (React, Docker, C#, WebGL). SPAN Digital; ex Derivco & FundStream (Cape Town).",
-            img: "./images/sam.jpeg",
-          },
-          {
-            name: "Tiga Chotisorayuth",
-            role: "Advisor — Brand & Marketing",
-            bio: "MBA, Led Agoda’s global brand guidelines; multi‑country campaigns (11M+ impressions); advising GTM & branding.",
-            img: "./images/tiga.jpeg",
-          },
-        ].map((m, i) => (
-          <ProfileCard key={i} name={m.name} role={m.role} bio={m.bio} img={m.img} />
-        ))}
-      </div>
+    <AnimatedConnectors className="hidden md:block" pattern="team" />
+    <div className="container mx-auto px-4 max-w-6xl relative">
+      <ScrollReveal className="text-center">
+        <h2 className="flex items-center justify-center gap-3 text-3xl sm:text-4xl font-extrabold heading-accent text-rose-900 dark:text-rose-100 drop-shadow-[0_0px_6px_rgba(0,0,0,0.8)]">
+          <span aria-hidden className="mr-2">
+            🤝
+          </span>
+          The People building Flewnt
+        </h2>
+      </ScrollReveal>
+      <ScrollReveal className="mt-8">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+          {[
+            {
+              name: "Jack Shiels",
+              role: "AI Technologist & Founder",
+              bio: "Founder at shiels.ai. Builds end‑to‑end LLM/NLP systems; UCL research on time‑series LLMs; ex Trayport & Accenture.",
+              img: "./images/jack.jpeg",
+            },
+            {
+              name: "Lude Tang",
+              role: "Legal & Founder",
+              bio: "UK‑trained legal/admin background; led operations across Malaysian SMEs and construction projects.",
+              img: "./images/lude.jpeg",
+            },
+            {
+              name: "Sam Shiels",
+              role: "Software Engineer & Founder",
+              bio: "Full‑stack engineer (React, Docker, C#, WebGL). SPAN Digital; ex Derivco & FundStream (Cape Town).",
+              img: "./images/sam.jpeg",
+            },
+          ].map((m, i) => (
+            <ProfileCard
+              key={i}
+              name={m.name}
+              role={m.role}
+              bio={m.bio}
+              img={m.img}
+            />
+          ))}
+        </div>
+      </ScrollReveal>
     </div>
   </Section>
 );
 
 const Flewnt: React.FC = () => (
-  <div className="flex flex-col bg-slate-900 min-h-screen">
+  <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#fff0f8] via-[#f5e6fb] to-[#ffe6f1] dark:bg-gradient-to-br dark:from-[#0a0314] dark:via-[#12082b] dark:to-[#05020f]">
     <TopNav />
     <main>
       <Hero />
       <Overview />
-      <Team />
-      <RepoLayout />
-      <Infrastructure />
+      <Requirements />
+      <AgentOrchestration />
       <AiArchitecture />
-      <Rendering />
-      <LabelingTraining />
-      <ConfigOperations />
+      <ContactCTA />
+      <Team />
     </main>
   </div>
 );

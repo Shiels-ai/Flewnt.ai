@@ -23,7 +23,9 @@ const markdownModules: RawMarkdownModules = import.meta.glob(
 ) as RawMarkdownModules;
 
 const parseFrontMatter = (markdown: string) => {
-  const frontMatterMatch = markdown.match(/^---\s*[\r\n]+([\s\S]*?)\r?\n---\s*/);
+  const frontMatterMatch = markdown.match(
+    /^---\s*[\r\n]+([\s\S]*?)\r?\n---\s*/
+  );
   if (!frontMatterMatch) {
     return { data: {}, body: markdown.trim() };
   }
@@ -72,7 +74,10 @@ const buildPosts = (): BlogPost[] => {
             ?.slice(0, 120) ??
           "",
         tags: data.tags
-          ? data.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
+          ? data.tags
+              .split(",")
+              .map((tag) => tag.trim())
+              .filter(Boolean)
           : [],
         content: body,
         html,
@@ -113,9 +118,7 @@ const Blog: React.FC = () => {
           The Blog
         </h1>
         <p className="text-lg text-slate-300 max-w-2xl">
-          Quick dispatches on how we build multilingual AI products, the rituals
-          that keep delivery accountable, and what we are experimenting with
-          next.
+          Read about the exciting projects at shiels.ai
         </p>
       </section>
       <section className="container mx-auto px-4 pb-20 max-w-6xl grid gap-10 lg:grid-cols-[360px_1fr]">
