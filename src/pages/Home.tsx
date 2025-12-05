@@ -665,7 +665,7 @@ const Services = () => {
       detail:
         "We design bespoke RAG systems that blend frontier models with your valuable data, building trustworthy retrieval and evaluation layers so answers stay accurate in your context. Build your competitive AI advantage with a RAG that empowers teams with accurate, useful, and fast knowledge retrieval.",
       image: {
-        src: "./images/flewnt.png",
+        src: "./images/rag_system.jpg",
         alt: "Diagram showcasing an LLM data pipeline",
         label: "LLM & NLP",
       },
@@ -698,7 +698,7 @@ const Services = () => {
       detail:
         "Rapid product delivery backed by enterprise-grade engineering practices: resilient APIs and deployments that span cloud and on-prem. We ship complete products that focus on usefulness first.",
       image: {
-        src: "./images/trust2_architecture.png",
+        src: "./images/full_stack_development.jpg",
         alt: "Medical application UI screenshot",
         label: "Full-Stack Delivery",
       },
